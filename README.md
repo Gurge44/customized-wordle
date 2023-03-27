@@ -11,6 +11,9 @@ enjoy
 ## CHANGE THE AMOUNTS OF GUESSES YOU HAVE
 go into the code of script.js and edit the variable "NUMBER_OF_GUESSES" to the amount of guesses you want to have
 
+## KNOWN BUGS
+yellow or green letters aren't matching the wordle mechanis when there's multiple of the same letter
+
 ![example 1](https://i.imgur.com/fy1cvUm.png)
 ![example 2](https://i.imgur.com/wNqWHXt.png)
 ![example 3](https://i.imgur.com/28uSViU.png)
