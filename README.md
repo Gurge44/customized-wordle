@@ -14,6 +14,7 @@ go into the code of script.js and edit the variable "NUMBER_OF_GUESSES" to the a
 ## KNOWN BUGS
 yellow or green letters aren't matching the wordle mechanis when there's multiple of the same letter
 
+## IMAGES
 ![example 1](https://i.imgur.com/fy1cvUm.png)
 ![example 2](https://i.imgur.com/wNqWHXt.png)
 ![example 3](https://i.imgur.com/28uSViU.png)
