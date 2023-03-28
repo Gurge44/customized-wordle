@@ -12,7 +12,7 @@ enjoy
 go into the code of script.js and edit the variable "NUMBER_OF_GUESSES" to the amount of guesses you want to have
 
 ## KNOWN BUGS
-yellow or green letters aren't matching the wordle mechanics when there's multiple of the same letter - works fine if the word has multiple of the same letter and you guess a word with multiple of those letters - doesn't work well if you guess a word with multiple of the same letter AND the word doesn't have more than 1 of that letter in the word
+yellow or green letters aren't matching the wordle mechanics when there's multiple of the same letter - works fine if the word has multiple of the same letter and you guess a word with multiple of those letters - doesn't work well if you guess a word with multiple of the same letter AND the word doesn't have more than 1 of that letter
 
 ## IMAGES
 ![example 1](https://i.imgur.com/fy1cvUm.png)
