@@ -60,7 +60,8 @@ body {
     cursor: pointer;
     text-transform: uppercase;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: lightgrey;
+    background-color: rgba(0, 0, 0, 10%);
+    color: lightgrey;
 }
 
 #note {
