@@ -11,6 +11,9 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     </head>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="script.js" type="module"></script>
     <body>
         <h1>Wordle</h1>
 
@@ -54,10 +57,8 @@
                 <button class="keyboard-button">Enter</button>
             </div>
         </div>
-        <p id="note">Press F5 to start a new one or click this button below</p>
-        <p style="text-align: center;"><input type="submit" value="Restart" id="restart" onclick="location.reload()"></p>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="script.js" type="module"></script>
+        
+        <p id="numOfGuesses" title="Changing this value automatically restarts the game and generates a new word to guess.">Number of Guesses: <input type="number" name="numOfGuessesType" id="numOfGuessesType" min="1" max="20" value="10"></p>
+        <p style="text-align: center;"><input type="submit" value="Restart" id="restart"></p>
     </body>
 </html>
