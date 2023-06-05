@@ -79,13 +79,45 @@ body {
 }
 
 #restart {
-    width: 10%;
+    width: 150px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.5em;
     text-align: center;
     background-color: black;
     color: white;
     border: 2px white solid;
+    border-radius: 5px;
+    vertical-align: middle;
+    transition: 0.25;
+}
+
+#restart:hover {
+    transition: 0.25s;
+    color: rgba(0, 0, 0, 10%);
+    border: 2px black solid;
+    color: grey;
+}
+
+#numOfGuessesType {
+    width: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    background-color: black;
+    color: white;
+    border: 2px white solid;
+    border-radius: 5px;
+    vertical-align: middle;
+    margin: auto;
+    margin-left: 20px;
+}
+
+#numOfGuesses {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    color: white;
     border-radius: 5px;
     vertical-align: middle;
 }
