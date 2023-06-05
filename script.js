@@ -21,6 +21,10 @@ function changeNumOfGuesses() {
     rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
     document.getElementById("game-board").innerHTML = "";
     initBoard();
+    for (const elem of document.getElementsByClassName("keyboard-button")) {
+        elem.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
+        elem.style.color = 'lightgrey'
+    }
     document.getElementById("error").innerHTML = "";
 }
 
@@ -78,11 +82,20 @@ function shadeKeyBoard(letter, color) {
                 return
             } 
 
-            if (oldColor === 'yellow' && color !== 'green') {
+            if (oldColor === 'rgb(175, 175, 0)' && color !== 'green') {
                 return
             }
 
             elem.style.backgroundColor = color
+            if (color === 'black') {
+                elem.style.color = 'rgba(255, 255, 255, 10%)'
+            }
+            if (color === 'rgb(175, 175, 0)') {
+                elem.style.color = 'black'
+            }
+            if (color === 'green') {
+                elem.style.color = 'lightgrey'
+            }
             break
         }
     }
@@ -192,11 +205,25 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
 })
 
 function restart() {
+    if (guessesRemaining === NUMBER_OF_GUESSES) {
+        toastr.error("You must have at least 1 completed guess to restart.")
+        return;
+    }
     document.getElementById("error").innerHTML = "Loading....";
+    var input = document.getElementById("numOfGuessesType").value;
+    if (input <= 0 || input === "") {
+        input = 1;
+    }
+    NUMBER_OF_GUESSES = input;
+    guessesRemaining = input;
     currentGuess = [];
     nextLetter = 0;
     rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
     document.getElementById("game-board").innerHTML = "";
     initBoard();
+    for (const elem of document.getElementsByClassName("keyboard-button")) {
+        elem.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
+        elem.style.color = 'lightgrey'
+    }
     document.getElementById("error").innerHTML = "";
 }
