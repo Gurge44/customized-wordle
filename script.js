@@ -1,12 +1,32 @@
-document.getElementById("error").innerHTML = "Loading...."
+document.getElementById("error").innerHTML = "Loading....";
 
 import { WORDS } from "./words.js";
 
-const NUMBER_OF_GUESSES = 10; // EDIT THIS NUMBER TO CHANGE THE AMOUNT OF GUESSES YOU HAVE
+var NUMBER_OF_GUESSES = 10; // EDIT THIS NUMBER TO CHANGE THE AMOUNT OF GUESSES YOU HAVE
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let nextLetter = 0;
-let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)]
+let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+
+function changeNumOfGuesses() {
+    document.getElementById("error").innerHTML = "Loading....";
+    var input = document.getElementById("numOfGuessesType").value;
+    if (input <= 0 || input === "") {
+        input = 1;
+    }
+    NUMBER_OF_GUESSES = input;
+    guessesRemaining = input;
+    currentGuess = [];
+    nextLetter = 0;
+    rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+    document.getElementById("game-board").innerHTML = "";
+    initBoard();
+    document.getElementById("error").innerHTML = "";
+}
+
+document.querySelector('#numOfGuessesType').addEventListener("change", () => changeNumOfGuesses());
+
+document.querySelector('#restart').addEventListener("click", () => restart())
 
 function initBoard() {
     let board = document.getElementById("game-board");
@@ -25,8 +45,7 @@ function initBoard() {
     }
 }
 
-initBoard()
-
+initBoard();
 
 function insertLetter (pressedKey) {
     if (nextLetter === 5) {
@@ -171,3 +190,13 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
 
     document.dispatchEvent(new KeyboardEvent("keyup", {'key': key}))
 })
+
+function restart() {
+    document.getElementById("error").innerHTML = "Loading....";
+    currentGuess = [];
+    nextLetter = 0;
+    rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+    document.getElementById("game-board").innerHTML = "";
+    initBoard();
+    document.getElementById("error").innerHTML = "";
+}
