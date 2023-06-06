@@ -22,7 +22,7 @@ function changeNumOfGuesses() {
     document.getElementById("game-board").innerHTML = "";
     initBoard();
     for (const elem of document.getElementsByClassName("keyboard-button")) {
-        elem.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
+        elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
         elem.style.color = 'lightgrey'
     }
     document.getElementById("error").innerHTML = "";
@@ -30,7 +30,7 @@ function changeNumOfGuesses() {
 
 document.querySelector('#numOfGuessesType').addEventListener("change", () => changeNumOfGuesses());
 
-document.querySelector('#restart').addEventListener("click", () => restart())
+document.querySelector('#restart').addEventListener("click", () => restart());
 
 function initBoard() {
     let board = document.getElementById("game-board");
@@ -149,6 +149,9 @@ function checkGuess () {
     if (guessString === rightGuessString) {
         toastr.success("You guessed right! Game over!")
         guessesRemaining = 0
+        if (document.getElementById("autoRestart").checked) {
+            autoRestart();
+        }
         return
     } else {
         guessesRemaining -= 1;
@@ -204,6 +207,39 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
     document.dispatchEvent(new KeyboardEvent("keyup", {'key': key}))
 })
 
+var cancel = false;
+
+function autoRestart() {
+    var timeleft = 2;
+    var temp = timeleft + 1;
+    document.getElementById("countdown").innerHTML = "Auto-Restarting in " + temp;
+    document.getElementById("cancel").hidden = false;
+    var timer = setInterval(function() {
+        if (cancel) {
+            clearInterval(timer);
+            cancel = false;
+        } else {
+            if (timeleft <= 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "";
+                document.getElementById("cancel").hidden = true;
+                restart();
+            } else {
+                document.getElementById("countdown").innerHTML = "Auto-Restarting in " + timeleft;
+            }
+            timeleft -= 1;
+        }
+    }, 1000);
+}
+
+function cancelAutoRestart() {
+    cancel = true;
+    document.getElementById("countdown").innerHTML = "";
+    document.getElementById("cancel").hidden = true;
+}
+
+document.querySelector('#cancel').addEventListener("click", () => cancelAutoRestart());
+
 function restart() {
     if (guessesRemaining === NUMBER_OF_GUESSES) {
         toastr.error("You must have at least 1 completed guess to restart.")
@@ -222,7 +258,7 @@ function restart() {
     document.getElementById("game-board").innerHTML = "";
     initBoard();
     for (const elem of document.getElementsByClassName("keyboard-button")) {
-        elem.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
+        elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
         elem.style.color = 'lightgrey'
     }
     document.getElementById("error").innerHTML = "";
