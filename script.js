@@ -127,7 +127,7 @@ function checkGuess () {
         let letter = currentGuess[i]
         
         let letterPosition = rightGuess.indexOf(currentGuess[i])
-        if (letterPosition === -1) {
+        if (letterPosition === -1 && currentGuess[i] !== rightGuess[i]) {
             letterColor = 'black'
         } else {
             if (currentGuess[i] === rightGuess[i]) {
@@ -212,6 +212,7 @@ var cancel = false;
 function autoRestart() {
     var timeleft = 2;
     var temp = timeleft + 1;
+    document.getElementById("autoRestartLine").hidden = true;
     document.getElementById("countdown").innerHTML = "Auto-Restarting in " + temp;
     document.getElementById("cancel").hidden = false;
     var timer = setInterval(function() {
@@ -223,6 +224,7 @@ function autoRestart() {
                 clearInterval(timer);
                 document.getElementById("countdown").innerHTML = "";
                 document.getElementById("cancel").hidden = true;
+                document.getElementById("autoRestartLine").hidden = false;
                 restart();
             } else {
                 document.getElementById("countdown").innerHTML = "Auto-Restarting in " + timeleft;
@@ -236,6 +238,7 @@ function cancelAutoRestart() {
     cancel = true;
     document.getElementById("countdown").innerHTML = "";
     document.getElementById("cancel").hidden = true;
+    document.getElementById("autoRestartLine").hidden = false;
 }
 
 document.querySelector('#cancel').addEventListener("click", () => cancelAutoRestart());
