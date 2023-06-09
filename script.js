@@ -2,11 +2,17 @@ document.getElementById("error").innerHTML = "Loading....";
 
 import { WORDS } from "./words.js";
 
-var NUMBER_OF_GUESSES = 10; // EDIT THIS NUMBER TO CHANGE THE AMOUNT OF GUESSES YOU HAVE
+var NUMBER_OF_GUESSES = 8; // EDIT THIS NUMBER TO CHANGE THE AMOUNT OF GUESSES YOU HAVE
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
+let lettersToBeFound = [];
 let nextLetter = 0;
 let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+lettersToBeFound = Array.from(rightGuessString);
+let indexesToBeFound = [];
+for (let o = 0; o < 5; o++) {
+    indexesToBeFound.push(o);
+}
 
 function changeNumOfGuesses() {
     document.getElementById("error").innerHTML = "Loading....";
@@ -17,6 +23,11 @@ function changeNumOfGuesses() {
     NUMBER_OF_GUESSES = input;
     guessesRemaining = input;
     currentGuess = [];
+    lettersToBeFound = [];
+    indexesToBeFound = [];
+    for (let o = 0; o < 5; o++) {
+        indexesToBeFound.push(o);
+    }
     nextLetter = 0;
     rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
     document.getElementById("game-board").innerHTML = "";
@@ -25,6 +36,7 @@ function changeNumOfGuesses() {
         elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
         elem.style.color = 'lightgrey'
     }
+    lettersToBeFound = Array.from(rightGuessString);
     document.getElementById("error").innerHTML = "";
 }
 
@@ -52,7 +64,10 @@ function initBoard() {
 initBoard();
 
 function insertLetter (pressedKey) {
-    if (nextLetter === 5) {
+    if (pressedKey === "F12") {
+        console.log("Hmmm.... looking to cheat?");
+    }
+    if (nextLetter === 5 || pressedKey === "F1" || pressedKey === "F2" || pressedKey === "F3" || pressedKey === "F4" || pressedKey === "F5" || pressedKey === "F6" || pressedKey === "F7" || pressedKey === "F8" || pressedKey === "F9" || pressedKey === "F10" || pressedKey === "F11" || pressedKey === "F12") {
         return
     }
     pressedKey = pressedKey.toLowerCase()
@@ -120,24 +135,98 @@ function checkGuess () {
         return
     }
 
-    
+    // console.log("---------------- NEW GUESS ----------------");
+    let yellowsLeft = rightGuess;
+
     for (let i = 0; i < 5; i++) {
-        let letterColor = ''
-        let box = row.children[i]
-        let letter = currentGuess[i]
+        // console.log("----");
+        let letterColor = '';
+        let box = row.children[i];
+        let letter = currentGuess[i];
         
-        let letterPosition = rightGuess.indexOf(currentGuess[i])
-        if (letterPosition === -1 && currentGuess[i] !== rightGuess[i]) {
-            letterColor = 'black'
+        let letterPosition = rightGuess.indexOf(currentGuess[i]);
+        let letterCount = (rightGuessString.match(new RegExp(currentGuess[i], "g")) || []).length;
+        let currentGuessedLetterCount = (guessString.match(new RegExp(currentGuess[i], "g")) || []).length;
+        if (letterCount === 0) {
+            letterColor = 'black';
         } else {
             if (currentGuess[i] === rightGuess[i]) {
-                letterColor = 'green'
+                letterColor = 'green';
+                let newArray = [];
+                let removeone = true;
+                for (let j = 0; j < lettersToBeFound.length; j++) {
+                    if (lettersToBeFound[j] !== currentGuess[i]) {
+                        newArray.push(lettersToBeFound[j]);
+                    } else {
+                        if (removeone === true && indexesToBeFound.includes(i)) {
+                            removeone = false;
+                        } else {
+                            newArray.push(lettersToBeFound[j]);
+                        }
+                    }
+                }
+                lettersToBeFound = newArray;
+                let newArrayzero = [];
+                for (let m = 0; m < indexesToBeFound.length; m++) {
+                    if (indexesToBeFound[m] !== i) {
+                        newArrayzero.push(indexesToBeFound[m]);
+                    }
+                }
+                indexesToBeFound = newArrayzero;
+                let newArraytwo = [];
+                let removetwo = true;
+                for (let l = 0; l < yellowsLeft.length; l++) {
+                    if (yellowsLeft[l] !== currentGuess[i]) {
+                        newArraytwo.push(yellowsLeft[l]);
+                    } else {
+                        if (removetwo === true) {
+                            removetwo = false;
+                        } else {
+                            newArraytwo.push(yellowsLeft[l]);
+                        }
+                    }
+                }
+                yellowsLeft = newArraytwo;
             } else {
-                letterColor = 'rgb(175, 175, 0)'
+                if (!lettersToBeFound.includes(currentGuess[i]) || !yellowsLeft.includes(currentGuess[i])) {
+                    letterColor = 'black';
+                } else {
+                    letterColor = 'rgb(175, 175, 0)';
+                    if (currentGuessedLetterCount > 1) {
+                        for (let p = -4; p <= 4; p++) {
+                            let temp = i + (p);
+                            if (currentGuess[temp] == rightGuess[temp] && currentGuess[temp] == currentGuess[i]) {
+                                letterColor = 'black';
+                            }
+                        }
+                    }
+                    let newArraythree = [];
+                    let removethree = true;
+                    for (let k = 0; k < yellowsLeft.length; k++) {
+                        if (yellowsLeft[k] !== currentGuess[i]) {
+                            newArraythree.push(yellowsLeft[k]);
+                            // console.log("for cycle yellowsLeft[k]: " + yellowsLeft[k]);
+                            // console.log("for cycle currentguess[i]: " + currentGuess[i]);
+                            // console.log("newArray (for yellowsLeft): " + newArraythree);
+                        } else {
+                            if (removethree === true) {
+                                removethree = false;
+                            } else {
+                                newArraythree.push(yellowsLeft[k]);
+                            }
+                        }
+                    }
+                    yellowsLeft = newArraythree;
+                }
             }
-
-            rightGuess[letterPosition] = "#"
         }
+        // console.log("LetterCount: " + letterCount);
+        // console.log(currentGuess[i] + " of " + currentGuess);
+        // console.log("Right letter: " + rightGuess[i]);
+        // console.log("yellowsLeft: " + yellowsLeft);
+        // console.log("LettersToBeFound: " + lettersToBeFound);
+        // console.log("IndexesToBeFound: " + indexesToBeFound);
+
 
         let delay = 0 * i
         setTimeout(()=> {
@@ -244,10 +333,10 @@ function cancelAutoRestart() {
 document.querySelector('#cancel').addEventListener("click", () => cancelAutoRestart());
 
 function restart() {
-    if (guessesRemaining === NUMBER_OF_GUESSES) {
-        toastr.error("You must have at least 1 completed guess to restart.")
-        return;
-    }
+    // if (guessesRemaining === NUMBER_OF_GUESSES) {
+    //     toastr.error("You must have at least 1 completed guess to restart.")
+    //     return;
+    // }
     document.getElementById("error").innerHTML = "Loading....";
     var input = document.getElementById("numOfGuessesType").value;
     if (input <= 0 || input === "") {
@@ -256,6 +345,11 @@ function restart() {
     NUMBER_OF_GUESSES = input;
     guessesRemaining = input;
     currentGuess = [];
+    lettersToBeFound = [];
+    indexesToBeFound = [];
+    for (let o = 0; o < 5; o++) {
+        indexesToBeFound.push(o);
+    }
     nextLetter = 0;
     rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
     document.getElementById("game-board").innerHTML = "";
@@ -264,5 +358,7 @@ function restart() {
         elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
         elem.style.color = 'lightgrey'
     }
+    lettersToBeFound = Array.from(rightGuessString);
     document.getElementById("error").innerHTML = "";
+    // console.log(rightGuessString);
 }
