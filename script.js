@@ -333,10 +333,10 @@ function cancelAutoRestart() {
 document.querySelector('#cancel').addEventListener("click", () => cancelAutoRestart());
 
 function restart() {
-    // if (guessesRemaining === NUMBER_OF_GUESSES) {
-    //     toastr.error("You must have at least 1 completed guess to restart.")
-    //     return;
-    // }
+    if (guessesRemaining === NUMBER_OF_GUESSES) {
+        toastr.error("You must have at least 1 completed guess to restart.")
+        return;
+    }
     document.getElementById("error").innerHTML = "Loading....";
     var input = document.getElementById("numOfGuessesType").value;
     if (input <= 0 || input === "") {
