@@ -74,6 +74,9 @@ function insertLetter (pressedKey) {
 
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
     let box = row.children[nextLetter]
+    if (document.getElementById("animations").checked) {
+        animateCSS(box, "pulse", '0.3s')
+    }
     box.textContent = pressedKey
     box.classList.add("filled-box")
     currentGuess.push(pressedKey)
@@ -87,6 +90,9 @@ function deleteLetter () {
     box.classList.remove("filled-box")
     currentGuess.pop()
     nextLetter -= 1
+    if (document.getElementById("animations").checked) {
+        animateCSS(box, "fadeIn", '0.3s')
+    }
 }
 
 function shadeKeyBoard(letter, color) {
@@ -94,22 +100,35 @@ function shadeKeyBoard(letter, color) {
         if (elem.textContent === letter) {
             let oldColor = elem.style.backgroundColor
             if (oldColor === 'green') {
+                if (document.getElementById("animations").checked) {
+                    animateCSS(elem, "bounce", '1.0s')
+                }
                 return
             } 
 
             if (oldColor === 'rgb(175, 175, 0)' && color !== 'green') {
+                if (document.getElementById("animations").checked) {
+                    animateCSS(elem, "headShake", '1.0s')
+                }
                 return
             }
 
-            elem.style.backgroundColor = color
+            if (oldColor === 'black' && color === 'black' && document.getElementById("animations").checked) {
+                animateCSS(elem, "heartBeat", '1.0s');
+            } else {
+                animateCSS(elem, "fadeIn", '0.3s');
+            }
+            
+            elem.style.backgroundColor = color;
+
             if (color === 'black') {
-                elem.style.color = 'rgba(255, 255, 255, 10%)'
+                elem.style.color = 'rgba(255, 255, 255, 10%)';
             }
             if (color === 'rgb(175, 175, 0)') {
-                elem.style.color = 'black'
+                elem.style.color = 'black';
             }
             if (color === 'green') {
-                elem.style.color = 'lightgrey'
+                elem.style.color = 'lightgrey';
             }
             break
         }
@@ -144,7 +163,7 @@ function checkGuess () {
         let box = row.children[i];
         let letter = currentGuess[i];
         
-        let letterPosition = rightGuess.indexOf(currentGuess[i]);
+        // let letterPosition = rightGuess.indexOf(currentGuess[i]);
         let letterCount = (rightGuessString.match(new RegExp(currentGuess[i], "g")) || []).length;
         let currentGuessedLetterCount = (guessString.match(new RegExp(currentGuess[i], "g")) || []).length;
         if (letterCount === 0) {
@@ -205,9 +224,6 @@ function checkGuess () {
                     for (let k = 0; k < yellowsLeft.length; k++) {
                         if (yellowsLeft[k] !== currentGuess[i]) {
                             newArraythree.push(yellowsLeft[k]);
-                            // console.log("for cycle yellowsLeft[k]: " + yellowsLeft[k]);
-                            // console.log("for cycle currentguess[i]: " + currentGuess[i]);
-                            // console.log("newArray (for yellowsLeft): " + newArraythree);
                         } else {
                             if (removethree === true) {
                                 removethree = false;
@@ -228,10 +244,24 @@ function checkGuess () {
         // console.log("IndexesToBeFound: " + indexesToBeFound);
 
 
-        let delay = 0 * i
-        setTimeout(()=> {
-            box.style.backgroundColor = letterColor
-            shadeKeyBoard(letter, letterColor)
+        if (document.getElementById("animations").checked) {
+            var temp = 250 * i;
+        } else {
+            var temp = 0;
+        }
+        let delay = temp;
+        setTimeout(() => {
+            if (guessString === rightGuessString) {
+                if (document.getElementById("animations").checked) {
+                    animateCSS(box, 'flip', '0.3s')
+                }
+            } else {
+                if (document.getElementById("animations").checked) {
+                    animateCSS(box, 'zoomIn', '0.3s')
+                }
+            }
+            box.style.backgroundColor = letterColor;
+            shadeKeyBoard(letter, letterColor);
         }, delay)
     }
 
@@ -362,3 +392,20 @@ function restart() {
     document.getElementById("error").innerHTML = "";
     // console.log(rightGuessString);
 }
+
+const animateCSS = (element, animation, time, prefix = 'animate__') => new Promise((resolve, reject) => {
+    const animationName = `${prefix}${animation}`;
+    // const node = document.querySelector(element);
+    const node = element
+    node.style.setProperty('--animate-duration', time);
+    
+    node.classList.add(`${prefix}animated`, animationName);
+
+    function handleAnimationEnd(event) {
+      event.stopPropagation();
+      node.classList.remove(`${prefix}animated`, animationName);
+      resolve('Animation ended');
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd, {once: true});
+});
