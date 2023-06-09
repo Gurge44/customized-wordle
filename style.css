@@ -124,7 +124,7 @@ body {
     vertical-align: middle;
 }
 
-#autoRestartLine {
+#autoRestartLine, #animationsLine {
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.5em;
@@ -134,7 +134,7 @@ body {
     vertical-align: middle;
 }
 
-#autoRestart {
+#autoRestart, #animations {
     scale: 1.5;
     margin-right: 10px;
 }
