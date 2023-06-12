@@ -58,10 +58,13 @@
             </div>
         </div>
         
-        <p id="autoRestartLine"><label><input type="checkbox" name="autoRestart" id="autoRestart">Auto Restart after correct guess</label></p>
+        <p id="settingsLine"><input type="button" value="Show/Hide Settings" id="showSettings"></p>
         <p id="countdownLine"><span id="countdown"></span><input type="button" value="cancel" id="cancel" hidden></p>
-        <p id="animationsLine"><label><input type="checkbox" name="animations" id="animations" checked>Enable Animations</label></p>
-        <p id="numOfGuesses" title="Changing this value automatically restarts the game and generates a new word to guess.">Number of Guesses: <input type="number" name="numOfGuessesType" id="numOfGuessesType" min="1" max="20" value="8"></p>
+        <div id="settings" hidden>
+            <p id="autoRestartLine"><label><input type="checkbox" name="autoRestart" id="autoRestart">Auto Restart after correct guess</label><br>Cooldown: <input type="number" name="autoRestartCooldown" id="autoRestartCooldown" value="3" min="1"></p>
+            <p id="animationsLine"><label><input type="checkbox" name="animations" id="animations" checked>Enable Animations</label></p>
+            <p id="numOfGuesses" title="Changing this value automatically restarts the game and generates a new word to guess.">Number of Guesses: <input type="number" name="numOfGuessesType" id="numOfGuessesType" min="1" max="20" value="9"></p>
+        </div>
         <p style="text-align: center;"><input type="submit" value="Restart" id="restart"></p>
     </body>
 </html>
