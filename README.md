@@ -14,9 +14,6 @@ A simple wordle built in html, css and javascript. This is a project for me to l
 - Right click in the index.html code > choose Open with Live Server (you need the live server extension) (it may also work without opening it as a Live Server)
 - Enjoy.
 
-## KNOWN BUGS
-There may be some incorrect letter coloring when the answer word has 3 or more of the same letter. (Working on a fix)
-
 ## IMAGES
 ![example 1](https://i.imgur.com/fy1cvUm.png)
 ![example 2](https://i.imgur.com/wNqWHXt.png)
