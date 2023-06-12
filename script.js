@@ -215,16 +215,20 @@ function checkGuess () {
                 }
                 yellowsLeft = newArraytwo;
             } else {
-                if (!lettersToBeFound.includes(currentGuess[i]) || !yellowsLeft.includes(currentGuess[i])) {
+                if (!yellowsLeft.includes(currentGuess[i])) {
                     letterColor = 'black';
                 } else {
                     letterColor = 'rgb(175, 175, 0)';
-                    if (currentGuessedLetterCount > 1 && letterCount < currentGuessedLetterCount) {
+                    let existCount = 0;
+                    if (currentGuessedLetterCount > 1 && currentGuessedLetterCount > letterCount) {
                         for (let p = i; p <= 4 - i; p++) {
                             let temp = i + (p);
                             if (currentGuess[temp] == rightGuess[temp] && currentGuess[temp] == currentGuess[i]) {
-                                letterColor = 'black';
+                                existCount += 1;
                             }
+                        }
+                        if (existCount >= letterCount) {
+                            letterColor = 'black';
                         }
                     }
                     let newArraythree = [];
@@ -244,8 +248,8 @@ function checkGuess () {
                 }
             }
         }
-        // console.log("LetterCount: " + letterCount);
         // console.log(currentGuess[i] + " of " + currentGuess);
+        // console.log("LetterCount: " + letterCount);
         // console.log("Right letter: " + rightGuess[i]);
         // console.log("yellowsLeft: " + yellowsLeft);
         // console.log("LettersToBeFound: " + lettersToBeFound);
@@ -402,7 +406,6 @@ function restart() {
     }
     lettersToBeFound = Array.from(rightGuessString);
     document.getElementById("error").innerHTML = "";
-    // console.log(rightGuessString);
 }
 
 const animateCSS = (element, animation, time, prefix = 'animate__') => new Promise((resolve, reject) => {
