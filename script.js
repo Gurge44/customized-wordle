@@ -2,7 +2,7 @@ document.getElementById("error").innerHTML = "Loading....";
 
 import { WORDS } from "./words.js";
 
-var NUMBER_OF_GUESSES = 8; // EDIT THIS NUMBER TO CHANGE THE AMOUNT OF GUESSES YOU HAVE
+var NUMBER_OF_GUESSES = 9; // EDIT THIS NUMBER TO CHANGE THE AMOUNT OF GUESSES YOU HAVE
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let lettersToBeFound = [];
@@ -43,6 +43,14 @@ function changeNumOfGuesses() {
 document.querySelector('#numOfGuessesType').addEventListener("change", () => changeNumOfGuesses());
 
 document.querySelector('#restart').addEventListener("click", () => restart());
+
+document.querySelector('#showSettings').addEventListener("click", () => {
+    if (document.getElementById("settings").hidden === false) {
+        document.getElementById("settings").hidden = true;
+    } else {
+        document.getElementById("settings").hidden = false;
+    }
+})
 
 function initBoard() {
     let board = document.getElementById("game-board");
@@ -211,8 +219,8 @@ function checkGuess () {
                     letterColor = 'black';
                 } else {
                     letterColor = 'rgb(175, 175, 0)';
-                    if (currentGuessedLetterCount > 1) {
-                        for (let p = -4; p <= 4; p++) {
+                    if (currentGuessedLetterCount > 1 && letterCount < currentGuessedLetterCount) {
+                        for (let p = i; p <= 4 - i; p++) {
                             let temp = i + (p);
                             if (currentGuess[temp] == rightGuess[temp] && currentGuess[temp] == currentGuess[i]) {
                                 letterColor = 'black';
@@ -245,7 +253,7 @@ function checkGuess () {
 
 
         if (document.getElementById("animations").checked) {
-            var temp = 250 * i;
+            var temp = 150 * i;
         } else {
             var temp = 0;
         }
@@ -253,11 +261,11 @@ function checkGuess () {
         setTimeout(() => {
             if (guessString === rightGuessString) {
                 if (document.getElementById("animations").checked) {
-                    animateCSS(box, 'flip', '0.3s')
+                    animateCSS(box, 'flip', '0.4s')
                 }
             } else {
                 if (document.getElementById("animations").checked) {
-                    animateCSS(box, 'zoomIn', '0.3s')
+                    animateCSS(box, 'backInDown', '0.6s')
                 }
             }
             box.style.backgroundColor = letterColor;
@@ -329,7 +337,11 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
 var cancel = false;
 
 function autoRestart() {
-    var timeleft = 2;
+    if (document.getElementById("autoRestartCooldown").value === "" || document.getElementById("autoRestartCooldown").value <= 0) {
+        var timeleft = 2;
+    } else {
+        var timeleft = document.getElementById("autoRestartCooldown").value - 1;
+    }
     var temp = timeleft + 1;
     document.getElementById("autoRestartLine").hidden = true;
     document.getElementById("countdown").innerHTML = "Auto-Restarting in " + temp;
