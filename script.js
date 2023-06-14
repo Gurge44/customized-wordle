@@ -1,17 +1,95 @@
 document.getElementById("error").innerHTML = "Loading....";
+toastr.options.progressBar = true;
 
 import { WORDS } from "./words.js";
+import { SIXLETTERWORDS } from "./6-letter-words.js";
+import { SEVENLETTERWORDS } from "./7-letter.words.js";
+import { EIGHTLETTERWORDS } from "./8-letter-words.js";
+import { THREELETTERWORDS } from "./3-letter-words.js";
+import { FOURLETTERWORDS } from "./4-letter-words.js";
+import { NINELETTERWORDS } from "./9-letter-words.js";
+import { TENLETTERWORDS } from "./10-letter-words.js";
+import { ELEVENLETTERWORDS } from "./11-letter-words.js";
+import { TWELVELETTERWORDS } from "./12-letter-words.js";
+import { THIRTEENLETTERWORDS } from "./13-letter-words.js";
+import { FOURTEENLETTERWORDS } from "./14-letter-words.js";
+import { FIFTEENLETTERWORDS } from "./15-letter-words.js";
+import { SIXTEENLETTERWORDS } from "./16-letter-words.js";
 
+var restartInQueue = false;
+var onCooldown = false;
+var wordLength = 5;
 var NUMBER_OF_GUESSES = 9; // EDIT THIS NUMBER TO CHANGE THE AMOUNT OF GUESSES YOU HAVE
 let guessesRemaining = NUMBER_OF_GUESSES;
+var kept = guessesRemaining;
 let currentGuess = [];
 let lettersToBeFound = [];
 let nextLetter = 0;
-let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+var rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
 lettersToBeFound = Array.from(rightGuessString);
 let indexesToBeFound = [];
-for (let o = 0; o < 5; o++) {
+for (let o = 0; o < wordLength; o++) {
     indexesToBeFound.push(o);
+}
+
+function changeWordLength() {
+    var inputLength = Number(document.getElementById("wordLengthInput").value);
+    if (inputLength <= 16 && inputLength >= 3) {
+        wordLength = inputLength;
+        document.getElementById("error").innerHTML = "Loading....";
+        var input = document.getElementById("numOfGuessesType").value;
+        if (input <= 0 || input === "") {
+            input = 1;
+        }
+        NUMBER_OF_GUESSES = input;
+        guessesRemaining = input;
+        currentGuess = [];
+        lettersToBeFound = [];
+        indexesToBeFound = [];
+        for (let o = 0; o < wordLength; o++) {
+            indexesToBeFound.push(o);
+        }
+        nextLetter = 0;
+        if (wordLength === 5) {
+            rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+        } else if (wordLength === 6) {
+            rightGuessString = SIXLETTERWORDS[Math.floor(Math.random() * SIXLETTERWORDS.length)]
+        } else if (wordLength === 7) {
+            rightGuessString = SEVENLETTERWORDS[Math.floor(Math.random() * SEVENLETTERWORDS.length)]
+        } else if (wordLength === 8) {
+            rightGuessString = EIGHTLETTERWORDS[Math.floor(Math.random() * EIGHTLETTERWORDS.length)]
+        } else if (wordLength === 3) {
+            rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
+        } else if (wordLength === 4) {
+            rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
+        } else if (wordLength === 9) {
+            rightGuessString = NINELETTERWORDS[Math.floor(Math.random() * NINELETTERWORDS.length)]
+        } else if (wordLength === 10) {
+            rightGuessString = TENLETTERWORDS[Math.floor(Math.random() * TENLETTERWORDS.length)]
+        } else if (wordLength === 11) {
+            rightGuessString = ELEVENLETTERWORDS[Math.floor(Math.random() * ELEVENLETTERWORDS.length)]
+        } else if (wordLength === 12) {
+            rightGuessString = TWELVELETTERWORDS[Math.floor(Math.random() * TWELVELETTERWORDS.length)]
+        } else if (wordLength === 13) {
+            rightGuessString = THIRTEENLETTERWORDS[Math.floor(Math.random() * THIRTEENLETTERWORDS.length)]
+        } else if (wordLength === 14) {
+            rightGuessString = FOURTEENLETTERWORDS[Math.floor(Math.random() * FOURTEENLETTERWORDS.length)]
+        } else if (wordLength === 15) {
+            rightGuessString = FIFTEENLETTERWORDS[Math.floor(Math.random() * FIFTEENLETTERWORDS.length)]
+        } else if (wordLength === 16) {
+            rightGuessString = SIXTEENLETTERWORDS[Math.floor(Math.random() * SIXTEENLETTERWORDS.length)]
+        }
+        document.getElementById("game-board").innerHTML = "";
+        initBoard();
+        let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
+        row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+        for (const elem of document.getElementsByClassName("keyboard-button")) {
+            elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
+            elem.style.color = 'lightgrey'
+        }
+        lettersToBeFound = Array.from(rightGuessString);
+        document.getElementById("error").innerHTML = "";
+    }
 }
 
 function changeNumOfGuesses() {
@@ -25,13 +103,43 @@ function changeNumOfGuesses() {
     currentGuess = [];
     lettersToBeFound = [];
     indexesToBeFound = [];
-    for (let o = 0; o < 5; o++) {
+    for (let o = 0; o < wordLength; o++) {
         indexesToBeFound.push(o);
     }
     nextLetter = 0;
-    rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+    if (wordLength === 5) {
+        rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+    } else if (wordLength === 6) {
+        rightGuessString = SIXLETTERWORDS[Math.floor(Math.random() * SIXLETTERWORDS.length)]
+    } else if (wordLength === 7) {
+        rightGuessString = SEVENLETTERWORDS[Math.floor(Math.random() * SEVENLETTERWORDS.length)]
+    } else if (wordLength === 8) {
+        rightGuessString = EIGHTLETTERWORDS[Math.floor(Math.random() * EIGHTLETTERWORDS.length)]
+    } else if (wordLength === 3) {
+        rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
+    } else if (wordLength === 4) {
+        rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
+    } else if (wordLength === 9) {
+        rightGuessString = NINELETTERWORDS[Math.floor(Math.random() * NINELETTERWORDS.length)]
+    } else if (wordLength === 10) {
+        rightGuessString = TENLETTERWORDS[Math.floor(Math.random() * TENLETTERWORDS.length)]
+    } else if (wordLength === 11) {
+        rightGuessString = ELEVENLETTERWORDS[Math.floor(Math.random() * ELEVENLETTERWORDS.length)]
+    } else if (wordLength === 12) {
+        rightGuessString = TWELVELETTERWORDS[Math.floor(Math.random() * TWELVELETTERWORDS.length)]
+    } else if (wordLength === 13) {
+        rightGuessString = THIRTEENLETTERWORDS[Math.floor(Math.random() * THIRTEENLETTERWORDS.length)]
+    } else if (wordLength === 14) {
+        rightGuessString = FOURTEENLETTERWORDS[Math.floor(Math.random() * FOURTEENLETTERWORDS.length)]
+    } else if (wordLength === 15) {
+        rightGuessString = FIFTEENLETTERWORDS[Math.floor(Math.random() * FIFTEENLETTERWORDS.length)]
+    } else if (wordLength === 16) {
+        rightGuessString = SIXTEENLETTERWORDS[Math.floor(Math.random() * SIXTEENLETTERWORDS.length)]
+    }
     document.getElementById("game-board").innerHTML = "";
     initBoard();
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
+    row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
     for (const elem of document.getElementsByClassName("keyboard-button")) {
         elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
         elem.style.color = 'lightgrey'
@@ -40,10 +148,9 @@ function changeNumOfGuesses() {
     document.getElementById("error").innerHTML = "";
 }
 
+document.querySelector("#wordLengthInput").addEventListener("change", () => changeWordLength())
 document.querySelector('#numOfGuessesType').addEventListener("change", () => changeNumOfGuesses());
-
 document.querySelector('#restart').addEventListener("click", () => restart());
-
 document.querySelector('#showSettings').addEventListener("click", () => {
     if (document.getElementById("settings").hidden === false) {
         document.getElementById("settings").hidden = true;
@@ -59,7 +166,7 @@ function initBoard() {
         let row = document.createElement("div")
         row.className = "letter-row"
         
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < wordLength; j++) {
             let box = document.createElement("div")
             box.className = "letter-box"
             row.appendChild(box)
@@ -71,11 +178,14 @@ function initBoard() {
 
 initBoard();
 
+let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
+row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+
 function insertLetter (pressedKey) {
     if (pressedKey === "F12") {
         console.log("Hmmm.... looking to cheat?");
     }
-    if (nextLetter === 5 || pressedKey === "F1" || pressedKey === "F2" || pressedKey === "F3" || pressedKey === "F4" || pressedKey === "F5" || pressedKey === "F6" || pressedKey === "F7" || pressedKey === "F8" || pressedKey === "F9" || pressedKey === "F10" || pressedKey === "F11" || pressedKey === "F12") {
+    if (nextLetter === wordLength || pressedKey === "F1" || pressedKey === "F2" || pressedKey === "F3" || pressedKey === "F4" || pressedKey === "F5" || pressedKey === "F6" || pressedKey === "F7" || pressedKey === "F8" || pressedKey === "F9" || pressedKey === "F10" || pressedKey === "F11" || pressedKey === "F12") {
         return
     }
     pressedKey = pressedKey.toLowerCase()
@@ -152,20 +262,25 @@ function checkGuess () {
         guessString += val
     }
 
-    if (guessString.length != 5) {
+    if (guessString.length != wordLength) {
         toastr.error("Not enough letters!")
         return
     }
 
-    if (!WORDS.includes(guessString)) {
+    if (!WORDS.includes(guessString) && !SIXLETTERWORDS.includes(guessString) && !SEVENLETTERWORDS.includes(guessString) && !EIGHTLETTERWORDS.includes(guessString) && !THREELETTERWORDS.includes(guessString) && !FOURLETTERWORDS.includes(guessString) && !NINELETTERWORDS.includes(guessString) && !TENLETTERWORDS.includes(guessString) && !ELEVENLETTERWORDS.includes(guessString) && !TWELVELETTERWORDS.includes(guessString) && !THIRTEENLETTERWORDS.includes(guessString) && !FOURTEENLETTERWORDS.includes(guessString) && !FIFTEENLETTERWORDS.includes(guessString) && !SIXTEENLETTERWORDS.includes(guessString)) {
         toastr.error("Word not in list!")
+        row.style.backgroundColor = 'red';
+        setTimeout(() => {
+            row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+        }, 750)
         return
     }
 
-    // console.log("---------------- NEW GUESS ----------------");
+    console.log("---------------- NEW GUESS ----------------");
+    console.log("Answer: " + rightGuessString);
     let yellowsLeft = rightGuess;
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < wordLength; i++) {
         // console.log("----");
         let letterColor = '';
         let box = row.children[i];
@@ -221,7 +336,7 @@ function checkGuess () {
                     letterColor = 'rgb(175, 175, 0)';
                     let existCount = 0;
                     if (currentGuessedLetterCount > 1 && currentGuessedLetterCount > letterCount) {
-                        for (let p = i; p <= 4 - i; p++) {
+                        for (let p = i; p <= (wordLength - 1) - i; p++) {
                             let temp = i + (p);
                             if (currentGuess[temp] == rightGuess[temp] && currentGuess[temp] == currentGuess[i]) {
                                 existCount += 1;
@@ -248,12 +363,12 @@ function checkGuess () {
                 }
             }
         }
-        // console.log(currentGuess[i] + " of " + currentGuess);
-        // console.log("LetterCount: " + letterCount);
-        // console.log("Right letter: " + rightGuess[i]);
-        // console.log("yellowsLeft: " + yellowsLeft);
-        // console.log("LettersToBeFound: " + lettersToBeFound);
-        // console.log("IndexesToBeFound: " + indexesToBeFound);
+        console.log("Inspecting '" + currentGuess[i] + "' of " + currentGuess);
+        console.log("LetterCount: " + letterCount);
+        console.log("Right letter: " + rightGuess[i]);
+        console.log("yellowsLeft: " + yellowsLeft);
+        console.log("LettersToBeFound: " + lettersToBeFound);
+        console.log("IndexesToBeFound: " + indexesToBeFound);
 
 
         if (document.getElementById("animations").checked) {
@@ -263,23 +378,24 @@ function checkGuess () {
         }
         let delay = temp;
         setTimeout(() => {
-            if (guessString === rightGuessString) {
-                if (document.getElementById("animations").checked) {
-                    animateCSS(box, 'flip', '0.4s')
-                }
-            } else {
-                if (document.getElementById("animations").checked) {
-                    animateCSS(box, 'backInDown', '0.6s')
-                }
+            if (document.getElementById("animations").checked) {
+                animateCSS(box, 'backInDown', '0.6s')
             }
             box.style.backgroundColor = letterColor;
+            box.style.borderColor = 'white';
+            box.style.color = 'white';
             shadeKeyBoard(letter, letterColor);
         }, delay)
     }
 
     if (guessString === rightGuessString) {
-        toastr.success("You guessed right! Game over!")
+        kept = guessesRemaining;
+        row.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
         guessesRemaining = 0
+        if (document.getElementById("animations").checked) {
+            onCooldown = true;
+            correctGuessBounce();
+        }
         if (document.getElementById("autoRestart").checked) {
             autoRestart();
         }
@@ -289,11 +405,37 @@ function checkGuess () {
         currentGuess = [];
         nextLetter = 0;
 
+        row.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
+        if (guessesRemaining !== 0) {
+            let temp = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
+            temp.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+        }
+
+        console.log(guessesRemaining);
+
         if (guessesRemaining === 0) {
             toastr.error("You've run out of guesses! Game over!")
             toastr.info(`The right word was: "${rightGuessString}"`)
         }
     }
+}
+
+function delay(milliseconds) {
+    return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+    });
+}
+
+async function correctGuessBounce() {
+    await delay(150 * wordLength);
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - kept];
+    for (let i = 0; i < wordLength; i++) {
+        let box = row.children[i];
+        await delay(100);
+        animateCSS(box, 'bounce', '1.0s');
+    }
+    toastr.success("You guessed right! Game over!")
+    onCooldown = false;
 }
 
 document.getElementById("error").innerHTML = ""
@@ -380,26 +522,71 @@ document.querySelector('#cancel').addEventListener("click", () => cancelAutoRest
 
 function restart() {
     if (guessesRemaining === NUMBER_OF_GUESSES) {
-        toastr.error("You must have at least 1 completed guess to restart.")
+        toastr.warning("Restart command ignored. You haven't made any guesses yet.")
         return;
+    }
+    if (onCooldown) {
+        if (restartInQueue) {
+            return;
+        } else {
+            restartInQueue = true;
+            toastr.warning("Restart will happen after the animations are done.")
+            setTimeout(() => {
+                restart();
+                onCooldown = false;
+                restartInQueue = false;
+            }, 350 * wordLength);
+            return;
+        }
     }
     document.getElementById("error").innerHTML = "Loading....";
     var input = document.getElementById("numOfGuessesType").value;
     if (input <= 0 || input === "") {
         input = 1;
     }
+    
     NUMBER_OF_GUESSES = input;
     guessesRemaining = input;
     currentGuess = [];
     lettersToBeFound = [];
     indexesToBeFound = [];
-    for (let o = 0; o < 5; o++) {
+    for (let o = 0; o < wordLength; o++) {
         indexesToBeFound.push(o);
     }
     nextLetter = 0;
-    rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+    if (wordLength === 5) {
+        rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+    } else if (wordLength === 6) {
+        rightGuessString = SIXLETTERWORDS[Math.floor(Math.random() * SIXLETTERWORDS.length)]
+    } else if (wordLength === 7) {
+        rightGuessString = SEVENLETTERWORDS[Math.floor(Math.random() * SEVENLETTERWORDS.length)]
+    } else if (wordLength === 8) {
+        rightGuessString = EIGHTLETTERWORDS[Math.floor(Math.random() * EIGHTLETTERWORDS.length)]
+    } else if (wordLength === 3) {
+        rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
+    } else if (wordLength === 4) {
+        rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
+    } else if (wordLength === 9) {
+        rightGuessString = NINELETTERWORDS[Math.floor(Math.random() * NINELETTERWORDS.length)]
+    } else if (wordLength === 10) {
+        rightGuessString = TENLETTERWORDS[Math.floor(Math.random() * TENLETTERWORDS.length)]
+    } else if (wordLength === 11) {
+        rightGuessString = ELEVENLETTERWORDS[Math.floor(Math.random() * ELEVENLETTERWORDS.length)]
+    } else if (wordLength === 12) {
+        rightGuessString = TWELVELETTERWORDS[Math.floor(Math.random() * TWELVELETTERWORDS.length)]
+    } else if (wordLength === 13) {
+        rightGuessString = THIRTEENLETTERWORDS[Math.floor(Math.random() * THIRTEENLETTERWORDS.length)]
+    } else if (wordLength === 14) {
+        rightGuessString = FOURTEENLETTERWORDS[Math.floor(Math.random() * FOURTEENLETTERWORDS.length)]
+    } else if (wordLength === 15) {
+        rightGuessString = FIFTEENLETTERWORDS[Math.floor(Math.random() * FIFTEENLETTERWORDS.length)]
+    } else if (wordLength === 16) {
+        rightGuessString = SIXTEENLETTERWORDS[Math.floor(Math.random() * SIXTEENLETTERWORDS.length)]
+    }
     document.getElementById("game-board").innerHTML = "";
     initBoard();
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
+    row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
     for (const elem of document.getElementsByClassName("keyboard-button")) {
         elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
         elem.style.color = 'lightgrey'

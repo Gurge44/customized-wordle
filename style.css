@@ -6,7 +6,8 @@ h1 {
 body {
     background-color: rgba(0, 0, 0, 90%);
     color: white;
-    overflow: auto;
+    overflow-y: scroll;
+    overflow-x: auto;
 }
 
 #game-board {
@@ -28,10 +29,12 @@ body {
     align-items: center;
     text-transform: uppercase;
     font-family: calibri;
+    color: aqua;
 }
   
 .filled-box {
-    border: 2px solid white;
+    border: 2px solid aqua;
+    background-color: black;
 }
   
 .letter-row {
@@ -63,6 +66,12 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: rgba(0, 0, 0, 50%);
     color: lightgrey;
+    transition: 0.2s;
+}
+
+.keyboard-button:hover {
+    background-color: blue !important;
+    color: white !important;
 }
 
 #note {
@@ -75,7 +84,7 @@ body {
     text-align: center;
 }
 
-.toast-error, .toast-info, .toast-success {
+.toast-error, .toast-info, .toast-success, .toast-warning {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
 }
@@ -86,8 +95,8 @@ body {
     font-size: 1.5em;
     text-align: center;
     background-color: black;
-    color: rgb(175, 175, 100);
-    border: 2px rgb(175, 175, 100) solid;
+    color: rgb(0, 255, 255);
+    border: 2px rgb(0, 255, 255) solid;
     border-radius: 5px;
     vertical-align: middle;
     transition: 0.25;
@@ -113,7 +122,7 @@ body {
     color: grey;
 }
 
-#numOfGuessesType {
+#numOfGuessesType, #wordLengthInput {
     width: 100px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.5em;
@@ -127,7 +136,7 @@ body {
     margin-left: 20px;
 }
 
-#numOfGuesses {
+#numOfGuesses, #wordLength {
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.5em;
