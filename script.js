@@ -276,8 +276,8 @@ function checkGuess () {
         return
     }
 
-    console.log("---------------- NEW GUESS ----------------");
-    console.log("Answer: " + rightGuessString);
+    // console.log("---------------- NEW GUESS ----------------");
+    // console.log("Answer: " + rightGuessString);
     let yellowsLeft = rightGuess;
 
     for (let i = 0; i < wordLength; i++) {
@@ -363,12 +363,12 @@ function checkGuess () {
                 }
             }
         }
-        console.log("Inspecting '" + currentGuess[i] + "' of " + currentGuess);
-        console.log("LetterCount: " + letterCount);
-        console.log("Right letter: " + rightGuess[i]);
-        console.log("yellowsLeft: " + yellowsLeft);
-        console.log("LettersToBeFound: " + lettersToBeFound);
-        console.log("IndexesToBeFound: " + indexesToBeFound);
+        // console.log("Inspecting '" + currentGuess[i] + "' of " + currentGuess);
+        // console.log("LetterCount: " + letterCount);
+        // console.log("Right letter: " + rightGuess[i]);
+        // console.log("yellowsLeft: " + yellowsLeft);
+        // console.log("LettersToBeFound: " + lettersToBeFound);
+        // console.log("IndexesToBeFound: " + indexesToBeFound);
 
 
         if (document.getElementById("animations").checked) {
@@ -410,8 +410,6 @@ function checkGuess () {
             let temp = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
             temp.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
         }
-
-        console.log(guessesRemaining);
 
         if (guessesRemaining === 0) {
             toastr.error("You've run out of guesses! Game over!")
