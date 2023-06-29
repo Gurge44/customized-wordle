@@ -31,6 +31,41 @@ let indexesToBeFound = [];
 for (let o = 0; o < wordLength; o++) {
     indexesToBeFound.push(o);
 }
+var greenColor = "#008000";
+var yellowColor = "#AFAF00";
+var greyColor = "#000000";
+var guessingRowLetterColor = "#00FFFF";
+var guessingRowColor = "#141432";
+var invalidColor = "#FF0000";
+
+function applyColorConfig() {
+    document.body.style.backgroundColor = document.getElementById("BackgroundColor").value;
+    document.body.style.color = document.getElementById("letterColor").value;
+    for (const elem of document.getElementsByClassName("letter-box")) {
+        elem.style.borderColor = document.getElementById("outlineColor").value;
+    }
+    for (const elem of document.getElementsByClassName("keyboard-button")) {
+        elem.style.backgroundColor = document.getElementById("keyboardBGColor").value;
+        elem.style.color = document.getElementById("keyboardLetterColor").value;
+    }
+    for (const elem of document.getElementsByClassName("button")) {
+        elem.style.backgroundColor = document.getElementById("buttonBGColor").value;
+    }
+    for (const elem of document.getElementsByClassName("input")) {
+        elem.style.backgroundColor = document.getElementById("inputBGColor").value;
+        elem.style.color = document.getElementById("inputLetterColor").value;
+        elem.style.borderColor = document.getElementById("inputBorderColor").value;
+    }
+    document.getElementById("title").style.color = document.getElementById("titleColor").value;
+    greenColor = document.getElementById("greenColor").value;
+    yellowColor = document.getElementById("yellowColor").value;
+    greyColor = document.getElementById("greyColor").value;
+    document.getElementById("h2title").style.color = document.getElementById("h2TitleColor").value;
+    invalidColor = document.getElementById("incorrectGuessRowColor").value;
+    guessingRowColor = document.getElementById("currentGuessBGColor").value;
+    guessingRowLetterColor = document.getElementById("currentGuessLetterColor").value;
+    document.getElementById("happyEaster").style.color = document.getElementById("easterEgg").value;
+}
 
 function changeWordLength() {
     var inputLength = Number(document.getElementById("wordLengthInput").value);
@@ -82,12 +117,15 @@ function changeWordLength() {
         document.getElementById("game-board").innerHTML = "";
         initBoard();
         let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
-        row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
-        for (const elem of document.getElementsByClassName("keyboard-button")) {
-            elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
-            elem.style.color = 'lightgrey'
-        }
+        row.style.backgroundColor = guessingRowColor;
         lettersToBeFound = Array.from(rightGuessString);
+        for (const elem of document.getElementsByClassName("letter-box")) {
+            elem.style.borderColor = document.getElementById("outlineColor").value;
+        }
+        for (const elem of document.getElementsByClassName("keyboard-button")) {
+            elem.style.backgroundColor = document.getElementById("keyboardBGColor").value;
+            elem.style.color = document.getElementById("keyboardLetterColor").value;
+        }
         document.getElementById("error").innerHTML = "";
     }
 }
@@ -139,16 +177,20 @@ function changeNumOfGuesses() {
     document.getElementById("game-board").innerHTML = "";
     initBoard();
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
-    row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+    row.style.backgroundColor = guessingRowColor;
+    for (const elem of document.getElementsByClassName("letter-box")) {
+        elem.style.borderColor = document.getElementById("outlineColor").value;
+    }
     for (const elem of document.getElementsByClassName("keyboard-button")) {
-        elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
-        elem.style.color = 'lightgrey'
+        elem.style.backgroundColor = document.getElementById("keyboardBGColor").value;
+        elem.style.color = document.getElementById("keyboardLetterColor").value;
     }
     lettersToBeFound = Array.from(rightGuessString);
     document.getElementById("error").innerHTML = "";
 }
 
-document.querySelector("#wordLengthInput").addEventListener("change", () => changeWordLength())
+document.querySelector("#saveColorConfigButton").addEventListener("click", () => applyColorConfig());
+document.querySelector("#wordLengthInput").addEventListener("change", () => changeWordLength());
 document.querySelector('#numOfGuessesType').addEventListener("change", () => changeNumOfGuesses());
 document.querySelector('#restart').addEventListener("click", () => restart());
 document.querySelector('#showSettings').addEventListener("click", () => {
@@ -157,29 +199,29 @@ document.querySelector('#showSettings').addEventListener("click", () => {
     } else {
         document.getElementById("settings").hidden = false;
     }
-})
+});
 
 function initBoard() {
     let board = document.getElementById("game-board");
 
     for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
-        let row = document.createElement("div")
-        row.className = "letter-row"
+        let row = document.createElement("div");
+        row.className = "letter-row";
         
         for (let j = 0; j < wordLength; j++) {
-            let box = document.createElement("div")
-            box.className = "letter-box"
-            row.appendChild(box)
+            let box = document.createElement("div");
+            box.className = "letter-box";
+            row.appendChild(box);
         }
 
-        board.appendChild(row)
+        board.appendChild(row);
     }
 }
 
 initBoard();
 
 let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
-row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+row.style.backgroundColor = guessingRowColor;
 
 function insertLetter (pressedKey) {
     if (pressedKey === "F12") {
@@ -188,50 +230,53 @@ function insertLetter (pressedKey) {
     if (nextLetter === wordLength || pressedKey === "F1" || pressedKey === "F2" || pressedKey === "F3" || pressedKey === "F4" || pressedKey === "F5" || pressedKey === "F6" || pressedKey === "F7" || pressedKey === "F8" || pressedKey === "F9" || pressedKey === "F10" || pressedKey === "F11" || pressedKey === "F12") {
         return
     }
-    pressedKey = pressedKey.toLowerCase()
+    pressedKey = pressedKey.toLowerCase();
 
-    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
-    let box = row.children[nextLetter]
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
+    let box = row.children[nextLetter];
     if (document.getElementById("animations").checked) {
-        animateCSS(box, "pulse", '0.3s')
+        animateCSS(box, "pulse", '0.3s');
     }
-    box.textContent = pressedKey
-    box.classList.add("filled-box")
-    currentGuess.push(pressedKey)
-    nextLetter += 1
+    box.textContent = pressedKey;
+    box.classList.add("filled-box");
+    currentGuess.push(pressedKey);
+    box.style.color = guessingRowLetterColor;
+    box.style.borderColor = guessingRowLetterColor;
+    nextLetter += 1;
 }
 
 function deleteLetter () {
-    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
-    let box = row.children[nextLetter - 1]
-    box.textContent = ""
-    box.classList.remove("filled-box")
-    currentGuess.pop()
-    nextLetter -= 1
+    let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
+    let box = row.children[nextLetter - 1];
+    box.textContent = "";
+    box.classList.remove("filled-box");
+    box.style.borderColor = document.getElementById("outlineColor").value;
+    currentGuess.pop();
+    nextLetter -= 1;
     if (document.getElementById("animations").checked) {
-        animateCSS(box, "fadeIn", '0.3s')
+        animateCSS(box, "fadeIn", '0.3s');
     }
 }
 
 function shadeKeyBoard(letter, color) {
     for (const elem of document.getElementsByClassName("keyboard-button")) {
         if (elem.textContent === letter) {
-            let oldColor = elem.style.backgroundColor
-            if (oldColor === 'green') {
+            let oldColor = elem.style.backgroundColor;
+            if (oldColor === greenColor) {
                 if (document.getElementById("animations").checked) {
-                    animateCSS(elem, "bounce", '1.0s')
+                    animateCSS(elem, "bounce", '1.0s');
                 }
-                return
+                return;
             } 
 
-            if (oldColor === 'rgb(175, 175, 0)' && color !== 'green') {
+            if (oldColor === yellowColor && color !== greenColor) {
                 if (document.getElementById("animations").checked) {
-                    animateCSS(elem, "headShake", '1.0s')
+                    animateCSS(elem, "headShake", '1.0s');
                 }
-                return
+                return;
             }
 
-            if (oldColor === 'black' && color === 'black' && document.getElementById("animations").checked) {
+            if (oldColor === greyColor && color === greyColor && document.getElementById("animations").checked) {
                 animateCSS(elem, "heartBeat", '1.0s');
             } else {
                 animateCSS(elem, "fadeIn", '0.3s');
@@ -239,13 +284,13 @@ function shadeKeyBoard(letter, color) {
             
             elem.style.backgroundColor = color;
 
-            if (color === 'black') {
+            if (color === greyColor) {
                 elem.style.color = 'rgba(255, 255, 255, 10%)';
             }
-            if (color === 'rgb(175, 175, 0)') {
-                elem.style.color = 'black';
+            if (color === yellowColor) {
+                elem.style.color = greyColor;
             }
-            if (color === 'green') {
+            if (color === greenColor) {
                 elem.style.color = 'lightgrey';
             }
             break
@@ -255,25 +300,25 @@ function shadeKeyBoard(letter, color) {
 
 function checkGuess () {
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
-    let guessString = ''
-    let rightGuess = Array.from(rightGuessString)
+    let guessString = '';
+    let rightGuess = Array.from(rightGuessString);
 
     for (const val of currentGuess) {
-        guessString += val
+        guessString += val;
     }
 
     if (guessString.length != wordLength) {
-        toastr.error("Not enough letters!")
-        return
+        toastr.error("Not enough letters!");
+        return;
     }
 
     if (!WORDS.includes(guessString) && !SIXLETTERWORDS.includes(guessString) && !SEVENLETTERWORDS.includes(guessString) && !EIGHTLETTERWORDS.includes(guessString) && !THREELETTERWORDS.includes(guessString) && !FOURLETTERWORDS.includes(guessString) && !NINELETTERWORDS.includes(guessString) && !TENLETTERWORDS.includes(guessString) && !ELEVENLETTERWORDS.includes(guessString) && !TWELVELETTERWORDS.includes(guessString) && !THIRTEENLETTERWORDS.includes(guessString) && !FOURTEENLETTERWORDS.includes(guessString) && !FIFTEENLETTERWORDS.includes(guessString) && !SIXTEENLETTERWORDS.includes(guessString)) {
-        toastr.error("Word not in list!")
-        row.style.backgroundColor = 'red';
+        toastr.error("Word not in list!");
+        row.style.backgroundColor = invalidColor;
         setTimeout(() => {
-            row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+            row.style.backgroundColor = guessingRowColor;
         }, 750)
-        return
+        return;
     }
 
     // console.log("---------------- NEW GUESS ----------------");
@@ -290,10 +335,10 @@ function checkGuess () {
         let letterCount = (rightGuessString.match(new RegExp(currentGuess[i], "g")) || []).length;
         let currentGuessedLetterCount = (guessString.match(new RegExp(currentGuess[i], "g")) || []).length;
         if (letterCount === 0) {
-            letterColor = 'black';
+            letterColor = greyColor;
         } else {
             if (currentGuess[i] === rightGuess[i]) {
-                letterColor = 'green';
+                letterColor = greenColor;
                 let newArray = [];
                 let removeone = true;
                 for (let j = 0; j < lettersToBeFound.length; j++) {
@@ -331,9 +376,9 @@ function checkGuess () {
                 yellowsLeft = newArraytwo;
             } else {
                 if (!yellowsLeft.includes(currentGuess[i])) {
-                    letterColor = 'black';
+                    letterColor = greyColor;
                 } else {
-                    letterColor = 'rgb(175, 175, 0)';
+                    letterColor = yellowColor;
                     let existCount = 0;
                     if (currentGuessedLetterCount > 1 && currentGuessedLetterCount > letterCount) {
                         for (let p = i; p <= (wordLength - 1) - i; p++) {
@@ -343,7 +388,7 @@ function checkGuess () {
                             }
                         }
                         if (existCount >= letterCount) {
-                            letterColor = 'black';
+                            letterColor = greyColor;
                         }
                     }
                     let newArraythree = [];
@@ -408,7 +453,7 @@ function checkGuess () {
         row.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
         if (guessesRemaining !== 0) {
             let temp = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
-            temp.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+            temp.style.backgroundColor = guessingRowColor;
         }
 
         if (guessesRemaining === 0) {
@@ -584,10 +629,13 @@ function restart() {
     document.getElementById("game-board").innerHTML = "";
     initBoard();
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
-    row.style.backgroundColor = 'rgba(0, 0, 150, 20%)';
+    row.style.backgroundColor = guessingRowColor;
+    for (const elem of document.getElementsByClassName("letter-box")) {
+        elem.style.borderColor = document.getElementById("outlineColor").value;
+    }
     for (const elem of document.getElementsByClassName("keyboard-button")) {
-        elem.style.backgroundColor = 'rgba(0, 0, 0, 50%)';
-        elem.style.color = 'lightgrey'
+        elem.style.backgroundColor = document.getElementById("keyboardBGColor").value;
+        elem.style.color = document.getElementById("keyboardLetterColor").value;
     }
     lettersToBeFound = Array.from(rightGuessString);
     document.getElementById("error").innerHTML = "";
