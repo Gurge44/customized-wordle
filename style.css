@@ -112,9 +112,10 @@ body {
     padding-right: 15px;
     padding-left: 16px;
     transition: 0.2s;
+    margin-right: 30px;
 }
 
-#showSettings, #openColorConfig, #saveColorConfigButton {
+#showSettings, #openColorConfig, #saveColorConfigButton, #openTimers, #startTimer, #startTimer2, #cancelMainTimer, #cancelPer-GuessTimer {
     width: fit-content;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1em;
@@ -151,7 +152,7 @@ body {
     transition: 0.2s;
 }
 
-#autoRestartLine, #animationsLine, #settingsLine {
+#autoRestartLine, #animationsLine, #settingsLine, #enableMainTimerLine, #enablePer-GuessTimerLine {
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.5em;
@@ -161,7 +162,7 @@ body {
     transition: 0.2s;
 }
 
-#autoRestart, #animations {
+#autoRestart, #animations, #enableMainTimer, #enablePer-GuessTimer {
     scale: 1.5;
     margin-right: 10px;
     transition: 0.2s;
@@ -179,6 +180,7 @@ body {
     margin: auto;
     margin-left: 20px;
     transition: 0.2s;
+    color: white;
 }
 
 #countdownLine {
@@ -191,7 +193,7 @@ body {
     transition: 0.2s;
 }
 
-#autoRestartCooldown {
+#autoRestartCooldown, #mainTimeLimitMinutes, #mainTimeLimitSeconds, #mainTimeBonusGreen, #mainTimeBonusYellow, #mainTimePenaltyGrey, #warningAtSeconds, #per-GuessTimerMinutes, #per-GuessTimerSeconds {
     width: 50px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1em;
@@ -206,17 +208,7 @@ body {
     transition: 0.2s;
 }
 
-a {
-    color: lightyellow;
-    transition: 0.2s;
-}
-
-a:hover {
-    color: aqua;
-    transition: 0.2s;
-}
-
-#main {
+#main, #mainTimerSettings, #per-GuessTimerSettings, #mainTimer, #per-GuessTimer {
     text-align: center;
     margin: auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -281,3 +273,23 @@ input[type=color] {
     margin: 0;
     transition: 0.2s;
 }
+
+#openTimers {
+    padding-top: 9.5px;
+    padding-left: 9.5px;
+    margin: 0;
+}
+
+#startTimer, #startTimer2 {
+    margin: 0;
+    margin-right: 15px;
+    padding-top: 7px;
+}
+
+#cancelMainTimer, #cancelPer-GuessTimer {
+    margin: 0;
+    margin-left: 15px;
+    padding-top: 7.5px;
+    padding-left: 9px;
+}
+

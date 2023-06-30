@@ -37,6 +37,14 @@ var greyColor = "#000000";
 var guessingRowLetterColor = "#00FFFF";
 var guessingRowColor = "#141432";
 var invalidColor = "#FF0000";
+var totalMinutesLeft = 0;
+var totalSecondsLeft = 1;
+var cancel2 = false;
+var timeToGuessMinutes = 0;
+var timeToGuessSeconds = 1;
+var cancel3 = false;
+var mainTimerRunning = false;
+var guessTimerRunning = false;
 
 function applyColorConfig() {
     document.body.style.backgroundColor = document.getElementById("BackgroundColor").value;
@@ -65,6 +73,7 @@ function applyColorConfig() {
     guessingRowColor = document.getElementById("currentGuessBGColor").value;
     guessingRowLetterColor = document.getElementById("currentGuessLetterColor").value;
     document.getElementById("happyEaster").style.color = document.getElementById("easterEgg").value;
+    toastr.success("Color config applied successfully");
 }
 
 function changeWordLength() {
@@ -126,6 +135,7 @@ function changeWordLength() {
             elem.style.backgroundColor = document.getElementById("keyboardBGColor").value;
             elem.style.color = document.getElementById("keyboardLetterColor").value;
         }
+        startTimers();
         document.getElementById("error").innerHTML = "";
     }
 }
@@ -186,9 +196,14 @@ function changeNumOfGuesses() {
         elem.style.color = document.getElementById("keyboardLetterColor").value;
     }
     lettersToBeFound = Array.from(rightGuessString);
+    startTimers();
     document.getElementById("error").innerHTML = "";
 }
 
+document.querySelector("#cancelMainTimer").addEventListener("click", () => {cancel2 = true});
+document.querySelector("#cancelPer-GuessTimer").addEventListener("click", () => {cancel3 = true;})
+document.querySelector("#startTimer").addEventListener("click", () => startTimers());
+document.querySelector("#startTimer2").addEventListener("click", () => startTimers());
 document.querySelector("#saveColorConfigButton").addEventListener("click", () => applyColorConfig());
 document.querySelector("#wordLengthInput").addEventListener("change", () => changeWordLength());
 document.querySelector('#numOfGuessesType').addEventListener("change", () => changeNumOfGuesses());
@@ -200,6 +215,93 @@ document.querySelector('#showSettings').addEventListener("click", () => {
         document.getElementById("settings").hidden = false;
     }
 });
+
+function startTimers() {
+    restart();
+    if (document.getElementById("enableMainTimer").checked && !mainTimerRunning) {
+        startMainTimer();
+        mainTimerRunning = true;
+    }
+    if (document.getElementById("enablePer-GuessTimer").checked && !guessTimerRunning) {
+        startPerGuessTimer();
+        guessTimerRunning = true;
+    }
+}
+
+function startMainTimer() {
+
+    totalMinutesLeft = document.getElementById("mainTimeLimitMinutes").value;
+    totalSecondsLeft = document.getElementById("mainTimeLimitSeconds").value;
+    if (totalMinutesLeft < 0) {totalMinutesLeft = 0}
+    if (totalSecondsLeft < 0) {totalSecondsLeft = 0}
+    if (totalSecondsLeft > 59) {totalSecondsLeft = 59}
+    document.getElementById("mainTimer").hidden = false;
+
+    var totalSecondsLeftDisplay = totalSecondsLeft;
+    var timer2 = setInterval(function() {
+        if (cancel2) {
+            clearInterval(timer2);
+            cancel2 = false;
+            mainTimerRunning = false;
+        } else {
+            if (totalSecondsLeft <= 0 && totalMinutesLeft > 0) {
+                totalMinutesLeft -= 1;
+                totalSecondsLeft = 60;
+            }
+            totalSecondsLeft -= 1;
+            if (totalSecondsLeft < 10) {
+                totalSecondsLeftDisplay = "0" + totalSecondsLeft;
+            } else {
+                totalSecondsLeftDisplay = totalSecondsLeft;
+            }
+            if (totalMinutesLeft <= 0 && totalSecondsLeft <= 0) {
+                clearInterval(timer2);
+                guessesRemaining = 0;
+                toastr.error("You ran out of time! Game over!");
+                mainTimerRunning = false;
+            }
+            document.getElementById("mainTimer").innerHTML = "Total Time Left - " + totalMinutesLeft + ":" + totalSecondsLeftDisplay;
+        }
+    }, 1000);
+}
+
+function startPerGuessTimer() {
+
+    timeToGuessMinutes = document.getElementById("per-GuessTimerMinutes").value;
+    timeToGuessSeconds = document.getElementById("per-GuessTimerSeconds").value;
+    if (timeToGuessMinutes < 0) {timeToGuessMinutes = 0}
+    if (timeToGuessSeconds < 0) {timeToGuessSeconds = 0}
+    if (timeToGuessSeconds > 59) {timeToGuessSeconds = 59}
+    document.getElementById("per-GuessTimer").hidden = false;
+
+    var timeToGuessSecondsDisplay = timeToGuessSeconds;
+    var timer3 = setInterval(function() {
+        if (cancel3) {
+            clearInterval(timer3);
+            cancel2 = true;
+            cancel3 = false;
+            guessTimerRunning = false;
+        } else {
+            if (timeToGuessSeconds <= 0 && timeToGuessMinutes > 0) {
+                timeToGuessMinutes -= 1;
+                timeToGuessSeconds = 60;
+            }
+            timeToGuessSeconds -= 1;
+            if (timeToGuessSeconds < 10) {
+                timeToGuessSecondsDisplay = "0" + timeToGuessSeconds;
+            } else {
+                timeToGuessSecondsDisplay = timeToGuessSeconds;
+            }
+            if (timeToGuessMinutes <= 0 && timeToGuessSeconds <= 0) {
+                clearInterval(timer3);
+                guessesRemaining = 0;
+                toastr.error("You didn't make a guess in time! Game over!");
+                guessTimerRunning = false;
+            }
+            document.getElementById("per-GuessTimer").innerHTML = "You must make a guess in - " + timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
+        }
+    }, 1000);
+}
 
 function initBoard() {
     let board = document.getElementById("game-board");
@@ -258,10 +360,27 @@ function deleteLetter () {
     }
 }
 
+function RGBtoHEX(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
 function shadeKeyBoard(letter, color) {
     for (const elem of document.getElementsByClassName("keyboard-button")) {
         if (elem.textContent === letter) {
-            let oldColor = elem.style.backgroundColor;
+            var rgbOld = elem.style.backgroundColor;
+            if (rgbOld === "") {
+                var oldColor = greyColor;
+            } else {
+                var toSend = rgbOld.replaceAll(" ", "");
+                toSend = toSend.replaceAll("(", "");
+                toSend = toSend.replaceAll(")", "");
+                toSend = toSend.replaceAll("r", "");
+                toSend = toSend.replaceAll("g", "");
+                toSend = toSend.replaceAll("b", "");
+                const newArrayfour = toSend.split(",");
+                var oldColor = RGBtoHEX(Number(newArrayfour[0]), Number(newArrayfour[1]), Number(newArrayfour[2]));
+            }
+            console.log(oldColor);
             if (oldColor === greenColor) {
                 if (document.getElementById("animations").checked) {
                     animateCSS(elem, "bounce", '1.0s');
@@ -307,13 +426,12 @@ function checkGuess () {
         guessString += val;
     }
 
-    if (guessString.length != wordLength) {
-        toastr.error("Not enough letters!");
-        return;
+    if (guessString === rightGuessString) {
+        cancel2 = true;
     }
 
-    if (!WORDS.includes(guessString) && !SIXLETTERWORDS.includes(guessString) && !SEVENLETTERWORDS.includes(guessString) && !EIGHTLETTERWORDS.includes(guessString) && !THREELETTERWORDS.includes(guessString) && !FOURLETTERWORDS.includes(guessString) && !NINELETTERWORDS.includes(guessString) && !TENLETTERWORDS.includes(guessString) && !ELEVENLETTERWORDS.includes(guessString) && !TWELVELETTERWORDS.includes(guessString) && !THIRTEENLETTERWORDS.includes(guessString) && !FOURTEENLETTERWORDS.includes(guessString) && !FIFTEENLETTERWORDS.includes(guessString) && !SIXTEENLETTERWORDS.includes(guessString)) {
-        toastr.error("Word not in list!");
+    if (guessString.length != wordLength) {
+        toastr.error("Invalid guess:\nNot enough letters!");
         row.style.backgroundColor = invalidColor;
         setTimeout(() => {
             row.style.backgroundColor = guessingRowColor;
@@ -321,12 +439,22 @@ function checkGuess () {
         return;
     }
 
-    // console.log("---------------- NEW GUESS ----------------");
-    // console.log("Answer: " + rightGuessString);
+    if (!WORDS.includes(guessString) && !SIXLETTERWORDS.includes(guessString) && !SEVENLETTERWORDS.includes(guessString) && !EIGHTLETTERWORDS.includes(guessString) && !THREELETTERWORDS.includes(guessString) && !FOURLETTERWORDS.includes(guessString) && !NINELETTERWORDS.includes(guessString) && !TENLETTERWORDS.includes(guessString) && !ELEVENLETTERWORDS.includes(guessString) && !TWELVELETTERWORDS.includes(guessString) && !THIRTEENLETTERWORDS.includes(guessString) && !FOURTEENLETTERWORDS.includes(guessString) && !FIFTEENLETTERWORDS.includes(guessString) && !SIXTEENLETTERWORDS.includes(guessString)) {
+        toastr.error("Invalid guess:\nWord not in list!");
+        row.style.backgroundColor = invalidColor;
+        setTimeout(() => {
+            row.style.backgroundColor = guessingRowColor;
+        }, 750)
+        return;
+    }
+
+    console.log("---------------- NEW GUESS ----------------");
+    console.log("Answer: " + rightGuessString);
     let yellowsLeft = rightGuess;
 
     for (let i = 0; i < wordLength; i++) {
-        // console.log("----");
+        console.log("----");
+        console.log("Inspecting letter '" + currentGuess[i] + "' of " + currentGuess);
         let letterColor = '';
         let box = row.children[i];
         let letter = currentGuess[i];
@@ -379,17 +507,23 @@ function checkGuess () {
                     letterColor = greyColor;
                 } else {
                     letterColor = yellowColor;
-                    let existCount = 0;
+                    var existCount = 0;
                     if (currentGuessedLetterCount > 1 && currentGuessedLetterCount > letterCount) {
-                        for (let p = i; p <= (wordLength - 1) - i; p++) {
-                            let temp = i + (p);
-                            if (currentGuess[temp] == rightGuess[temp] && currentGuess[temp] == currentGuess[i]) {
-                                existCount += 1;
+                        for (let p = i; p <= wordLength - i; p++) {
+                            let temp = i + p - 1;
+                            if (temp > 0) {
+                                if (currentGuess[temp] == rightGuess[temp] && currentGuess[temp] == currentGuess[i]) {
+                                    existCount += 1;
+                                }
+                                console.log("p: " + p)
+                                console.log("i: " + i)
+                                console.log("temp: " + temp)
                             }
                         }
                         if (existCount >= letterCount) {
                             letterColor = greyColor;
                         }
+                        console.log("This letter exists " + existCount + " times forward in the guess in the correct place, and " + letterCount + " times in the answer.")
                     }
                     let newArraythree = [];
                     let removethree = true;
@@ -408,12 +542,11 @@ function checkGuess () {
                 }
             }
         }
-        // console.log("Inspecting '" + currentGuess[i] + "' of " + currentGuess);
-        // console.log("LetterCount: " + letterCount);
-        // console.log("Right letter: " + rightGuess[i]);
-        // console.log("yellowsLeft: " + yellowsLeft);
-        // console.log("LettersToBeFound: " + lettersToBeFound);
-        // console.log("IndexesToBeFound: " + indexesToBeFound);
+        console.log("LetterCount: " + letterCount);
+        console.log("Right letter: " + rightGuess[i]);
+        console.log("yellowsLeft: " + yellowsLeft);
+        console.log("LettersToBeFound: " + lettersToBeFound);
+        console.log("IndexesToBeFound: " + indexesToBeFound);
 
 
         if (document.getElementById("animations").checked) {
@@ -436,7 +569,7 @@ function checkGuess () {
     if (guessString === rightGuessString) {
         kept = guessesRemaining;
         row.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
-        guessesRemaining = 0
+        guessesRemaining = 0;
         if (document.getElementById("animations").checked) {
             onCooldown = true;
             correctGuessBounce();
@@ -451,12 +584,12 @@ function checkGuess () {
         nextLetter = 0;
 
         row.style.backgroundColor = 'rgba(0, 0, 0, 10%)';
-        if (guessesRemaining !== 0) {
+        if (guessesRemaining > 0) {
             let temp = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining];
             temp.style.backgroundColor = guessingRowColor;
         }
 
-        if (guessesRemaining === 0) {
+        if (guessesRemaining <= 0) {
             toastr.error("You've run out of guesses! Game over!")
             toastr.info(`The right word was: "${rightGuessString}"`)
         }
@@ -491,36 +624,38 @@ document.addEventListener("keyup", (e) => {
 
     let pressedKey = String(e.key)
     if (pressedKey === "Backspace" && nextLetter !== 0) {
-        deleteLetter()
-        return
+        deleteLetter();
+        return;
     }
 
     if (pressedKey === "Enter") {
-        checkGuess()
-        return
+        if (guessesRemaining > 0) {
+            checkGuess();
+        }
+        return;
     }
 
     let found = pressedKey.match(/[a-z]/gi)
     if (!found || found.length > 1) {
-        return
+        return;
     } else {
-        insertLetter(pressedKey)
+        insertLetter(pressedKey);
     }
 })
 
 document.getElementById("keyboard-cont").addEventListener("click", (e) => {
-    const target = e.target
+    const target = e.target;
     
     if (!target.classList.contains("keyboard-button")) {
-        return
+        return;
     }
-    let key = target.textContent
+    let key = target.textContent;
 
     if (key === "Del") {
-        key = "Backspace"
+        key = "Backspace";
     } 
 
-    document.dispatchEvent(new KeyboardEvent("keyup", {'key': key}))
+    document.dispatchEvent(new KeyboardEvent("keyup", {'key': key}));
 })
 
 var cancel = false;
@@ -565,7 +700,6 @@ document.querySelector('#cancel').addEventListener("click", () => cancelAutoRest
 
 function restart() {
     if (guessesRemaining === NUMBER_OF_GUESSES) {
-        toastr.warning("Restart command ignored. You haven't made any guesses yet.")
         return;
     }
     if (onCooldown) {
@@ -638,6 +772,7 @@ function restart() {
         elem.style.color = document.getElementById("keyboardLetterColor").value;
     }
     lettersToBeFound = Array.from(rightGuessString);
+    startTimers();
     document.getElementById("error").innerHTML = "";
 }
 

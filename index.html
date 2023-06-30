@@ -17,6 +17,9 @@
     <body>
         <h1 id="title">Wordle</h1>
 
+        <div id="mainTimer"></div>
+        <div id="per-GuessTimer"></div>
+
         <div id="game-board"></div>
 
         <p id="error">Failed to load the script file. Make sure you opened index.html as a Live Server, and the script.js and the style.css files are in the same folder as index.html</p>
@@ -58,7 +61,7 @@
             </div>
         </div>
         
-        <p id="settingsLine"><button id="showSettings" class="button"><img src="settings.png" alt="Show/Hide Settings" title="Show/Hide Settings" style="width: 75px;"></button><button id="openColorConfig" class="button" onclick="var a = document.getElementById('main'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}"><img src="colors_2.png" alt="Customize Colors" title="Customize Colors" style="width: 52px;"></button><button id="restart" class="button"><img src="restart.png" alt="Restart" title="Restart" style="width: 54px;"></button></p>
+        <p id="settingsLine"><button id="showSettings" class="button"><img src="settings.png" alt="Show/Hide Settings" title="Show/Hide Settings" style="width: 76px;"></button><button id="openColorConfig" class="button" onclick="var a = document.getElementById('main'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}"><img src="colors_2.png" alt="Customize Colors" title="Customize Colors" style="width: 51px;"></button><button id="restart" class="button"><img src="restart.png" alt="Restart" title="Restart" style="width: 54px;"></button><button id="openTimers" class="button"><img src="timers.jpg" alt="Open Timer Config" title="Open Timer Config" onclick="var a = document.getElementById('timers'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}" style="width: 51.5px;"></button></p>
         <p id="countdownLine"><span id="countdown"></span><input type="button" value="cancel" id="cancel" hidden></p>
         <div id="settings" hidden>
             <p id="autoRestartLine"><label><input type="checkbox" name="autoRestart" id="autoRestart">Auto Restart after correct guess</label><br>Cooldown: <input type="number" name="autoRestartCooldown" id="autoRestartCooldown" value="3" min="1" class="input"></p>
@@ -104,5 +107,47 @@
                 <p id="save"><button id="saveColorConfigButton" class="button"><img src="apply.png" alt="Save" title="Note: A restart or a guess may be needed for the changes to take effect." style="width: 60px;"></button></p>
             </div>
         </div>
+        <div id="timers" hidden>
+            <p id="enableMainTimerLine"><label><input type="checkbox" name="enableMainTimer" id="enableMainTimer" onclick="var a = document.getElementById('mainTimerSettings'); if (a.hidden === true) {a.hidden = false} else {a.hidden = true}">Enable Main Time Limit</label></p>
+            <div id="mainTimerSettings" hidden>
+                <table>
+                    <tr>
+                        <td class="shortText">Main Time Limit</td>
+                        <td class="mediumText"><input type="number" name="mainTimeLimitMinutes" id="mainTimeLimitMinutes" class="input" value="5" min="0"> m <input type="number" name="mainTimeLimitSeconds" id="mainTimeLimitSeconds" class="input" value="30" min="0" max="59"> s</td>
+                    </tr>
+                    <tr>
+                        <td class="mediumText">Time bonus after each <br> green letter found</td>
+                        <td class="shortText"><input type="number" name="mainTimeBonusGreen" id="mainTimeBonusGreen" class="input" value="40" min="0" max="59"> s</td>
+                    </tr>
+                    <tr>
+                        <td class="mediumText">Time bonus after each <br> yellow letter found</td>
+                        <td class="shortText"><input type="number" name="mainTimeBonusYellow" id="mainTimeBonusYellow" class="input" value="25" min="0" max="59"> s</td>
+                    </tr>
+                    <tr>
+                        <td class="mediumText">Time penalty after each <br> grey letter</td>
+                        <td class="shortText"><input type="number" name="mainTimePenaltyGrey" id="mainTimePenaltyGrey" class="input" value="5" min="0" max="59"> s</td>
+                    </tr>
+                    <tr>
+                        <td class="shortText">Show warning when</td><td class="mediumText"><input type="number" name="warningAtSeconds" id="warningAtSeconds" class="input" value="55" max="59" min="1"> s left</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button class="button" id="startTimer"><img src="start_1.png" alt="Start/Restart Timer" title="Start/Restart Timer (Note: Also generates a new word to guess)" style="width: 125px;"></button><button class="button" id="cancelMainTimer"><img src="cancel.png" alt="Cancel Timer" title="Cancel Timer (Note: this also generates a new word to guess)" style="width: 47px;"></button></td>
+                    </tr>
+                </table>
+            </div>
+            <p id="enablePer-GuessTimerLine"><label><input type="checkbox" name="enablePer-GuessTimer" id="enablePer-GuessTimer" onclick="var a = document.getElementById('per-GuessTimerSettings'); if (a.hidden === true) {a.hidden = false} else {a.hidden = true}">Enable Time Limit for Each Guess</label></p>
+            <div id="per-GuessTimerSettings" hidden>
+                <table>
+                    <tr>
+                        <td class="shortText">Time to make a Guess (individual)</td>
+                        <td class="mediumText"><input type="number" name="per-GuessTimerMinutes" id="per-GuessTimerMinutes" class="input" value="1" min="0"> m <input type="number" name="per-GuessTimerSeconds" id="per-GuessTimerSeconds" class="input" value="15" min="0" max="59"> s</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button class="button" id="startTimer2"><img src="start_1.png" alt="Start/Restart Timer" title="Start/Restart Timer (Note: Also generates a new word to guess)" style="width: 125px;"></button><button class="button" id="cancelPer-GuessTimer"><img src="cancel.png" alt="Cancel Timer" title="Cancel Timer (Note: this also generates a new word to guess)" style="width: 47px;"></button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <footer style="font-size: 0.1em; color: black !important; text-align: center;"><a href='https://pngtree.com/so/start' style="font-size: 0.1em; color: black !important; text-decoration: none;">start png from pngtree.com/</a></footer>
     </body>
 </html>
