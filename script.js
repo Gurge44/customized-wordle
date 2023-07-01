@@ -26,7 +26,6 @@ let currentGuess = [];
 let lettersToBeFound = [];
 let nextLetter = 0;
 var rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
-rightGuessString = "blots";
 lettersToBeFound = Array.from(rightGuessString);
 let indexesToBeFound = [];
 for (let o = 0; o < wordLength; o++) {
@@ -666,14 +665,12 @@ function checkGuess () {
                 while (totalSecondsLeft > 59) {
                     totalMinutesLeft += 1;
                     totalSecondsLeft -= 60;
-                    console.log('plusMinutes');
                 }
             }
             if (totalSecondsLeft < 0 && totalMinutesLeft > 0) {
                 while (totalSecondsLeft < 0 && totalMinutesLeft > 0) {
                     totalSecondsLeft += 60;
                     totalMinutesLeft -= 1;
-                    console.log("minusMinutes");
                 }
             }
             if (totalSecondsLeft <= 0 && totalMinutesLeft <= 0) {
