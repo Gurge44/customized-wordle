@@ -26,6 +26,7 @@ let currentGuess = [];
 let lettersToBeFound = [];
 let nextLetter = 0;
 var rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+rightGuessString = "blots";
 lettersToBeFound = Array.from(rightGuessString);
 let indexesToBeFound = [];
 for (let o = 0; o < wordLength; o++) {
@@ -42,9 +43,24 @@ var totalSecondsLeft = 1;
 var cancel2 = false;
 var timeToGuessMinutes = 0;
 var timeToGuessSeconds = 1;
+var fixTimeToGuessMinutes = timeToGuessMinutes;
+var fixTimeToGuessSeconds = timeToGuessSeconds;
 var cancel3 = false;
 var mainTimerRunning = false;
 var guessTimerRunning = false;
+var hideMainTimer = true;
+var timerExpiredColor = "#FF0000";
+var timerWarningColor = "#FFFF00";
+var inactiveTimerColor = "#777777";
+var greenTimeBonus = 40;
+var yellowTimeBonus = 10;
+var greyTimePenalty = 5;
+var timeChange = 0;
+var allowReset = true;
+var entireGuessTimeChange = 0;
+var timeChangePositiveColor = "#00FF00";
+var noTimeChangeColor = "#FFE135";
+var timeChangeNegativeColor = "#FF0000";
 
 function applyColorConfig() {
     document.body.style.backgroundColor = document.getElementById("BackgroundColor").value;
@@ -73,7 +89,13 @@ function applyColorConfig() {
     guessingRowColor = document.getElementById("currentGuessBGColor").value;
     guessingRowLetterColor = document.getElementById("currentGuessLetterColor").value;
     document.getElementById("happyEaster").style.color = document.getElementById("easterEgg").value;
+    timerWarningColor = document.getElementById("timerWarningColor").value;
+    timerExpiredColor = document.getElementById("timerExpiredColor").value;
+    inactiveTimerColor = document.getElementById("inactiveTimerColor").value;
     toastr.success("Color config applied successfully");
+    timeChangePositiveColor = document.getElementById("timePlusColor").value;
+    noTimeChangeColor = document.getElementById("timeStaysColor").value;
+    timeChangeNegativeColor = document.getElementById("timeMinusColor").value;
 }
 
 function changeWordLength() {
@@ -230,21 +252,45 @@ function startTimers() {
 
 function startMainTimer() {
 
-    totalMinutesLeft = document.getElementById("mainTimeLimitMinutes").value;
-    totalSecondsLeft = document.getElementById("mainTimeLimitSeconds").value;
+    cancel2 = false;
+    totalMinutesLeft = Number(document.getElementById("mainTimeLimitMinutes").value);
+    totalSecondsLeft = Number(document.getElementById("mainTimeLimitSeconds").value);
+    var warningTime = Number(document.getElementById("warningAtSeconds").value);
+    greenTimeBonus = document.getElementById("mainTimeBonusGreen").value;
+    yellowTimeBonus = document.getElementById("mainTimeBonusYellow").value;
+    greyTimePenalty = document.getElementById("mainTimePenaltyGrey").value;
     if (totalMinutesLeft < 0) {totalMinutesLeft = 0}
     if (totalSecondsLeft < 0) {totalSecondsLeft = 0}
     if (totalSecondsLeft > 59) {totalSecondsLeft = 59}
-    document.getElementById("mainTimer").hidden = false;
-
+    if (warningTime < 1) {warningTime = 1}
+    if (warningTime > 59) {warningTime = 59}
+    if (greenTimeBonus < 0) {greenTimeBonus = 0}
+    if (yellowTimeBonus < 0) {yellowTimeBonus = 0}
+    if (greyTimePenalty < 0) {greyTimePenalty = 0}
     var totalSecondsLeftDisplay = totalSecondsLeft;
+    if (totalSecondsLeft < 10) {
+        totalSecondsLeftDisplay = "0" + totalSecondsLeft;
+    } else {
+        totalSecondsLeftDisplay = totalSecondsLeft;
+    }
+    document.getElementById("mainTimerDisplay").style.color = document.getElementById("letterColor").value;
+    document.getElementById("mainTimer").innerHTML = totalMinutesLeft + ":" + totalSecondsLeftDisplay;
+    document.getElementById("mainTimerDisplay").hidden = false;
+    var outputWarn = true;
+
     var timer2 = setInterval(function() {
         if (cancel2) {
             clearInterval(timer2);
             cancel2 = false;
             mainTimerRunning = false;
+            if (hideMainTimer) {
+                document.getElementById("mainTimerDisplay").hidden = true;
+            } else {
+                hideMainTimer = true;
+                document.getElementById("mainTimerDisplay").style.color = inactiveTimerColor;
+            }
         } else {
-            if (totalSecondsLeft <= 0 && totalMinutesLeft > 0) {
+            if (totalSecondsLeft <= 0 && totalMinutesLeft > 0 && allowReset) {
                 totalMinutesLeft -= 1;
                 totalSecondsLeft = 60;
             }
@@ -254,33 +300,53 @@ function startMainTimer() {
             } else {
                 totalSecondsLeftDisplay = totalSecondsLeft;
             }
+            if (totalSecondsLeft <= warningTime && totalMinutesLeft <= 0) {
+                if (outputWarn) {
+                    toastr.warning("Warning! " + totalSecondsLeft + " seconds left!");
+                    outputWarn = false;
+                }
+                document.getElementById("mainTimerDisplay").style.color = timerWarningColor;
+            }
             if (totalMinutesLeft <= 0 && totalSecondsLeft <= 0) {
+                document.getElementById("mainTimerDisplay").style.color = timerExpiredColor;
                 clearInterval(timer2);
                 guessesRemaining = 0;
                 toastr.error("You ran out of time! Game over!");
                 mainTimerRunning = false;
+                cancel3 = true;
             }
-            document.getElementById("mainTimer").innerHTML = "Total Time Left - " + totalMinutesLeft + ":" + totalSecondsLeftDisplay;
+            document.getElementById("mainTimer").innerHTML = totalMinutesLeft + ":" + totalSecondsLeftDisplay;
         }
     }, 1000);
 }
 
 function startPerGuessTimer() {
 
-    timeToGuessMinutes = document.getElementById("per-GuessTimerMinutes").value;
-    timeToGuessSeconds = document.getElementById("per-GuessTimerSeconds").value;
+    cancel3 = false;
+    timeToGuessMinutes = Number(document.getElementById("per-GuessTimerMinutes").value);
+    timeToGuessSeconds = Number(document.getElementById("per-GuessTimerSeconds").value);
     if (timeToGuessMinutes < 0) {timeToGuessMinutes = 0}
     if (timeToGuessSeconds < 0) {timeToGuessSeconds = 0}
     if (timeToGuessSeconds > 59) {timeToGuessSeconds = 59}
-    document.getElementById("per-GuessTimer").hidden = false;
-
+    fixTimeToGuessMinutes = timeToGuessMinutes;
+    fixTimeToGuessSeconds = timeToGuessSeconds;
     var timeToGuessSecondsDisplay = timeToGuessSeconds;
+    if (timeToGuessSeconds < 10) {
+        timeToGuessSecondsDisplay = "0" + timeToGuessSeconds;
+    } else {
+        timeToGuessSecondsDisplay = timeToGuessSeconds;
+    }
+    document.getElementById("per-GuessTimerDisplay").style.color = document.getElementById("letterColor").value;
+    document.getElementById("per-GuessTimer").innerHTML = timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
+    document.getElementById("per-GuessTimerDisplay").hidden = false;
+
     var timer3 = setInterval(function() {
         if (cancel3) {
             clearInterval(timer3);
             cancel2 = true;
             cancel3 = false;
             guessTimerRunning = false;
+            document.getElementById("per-GuessTimerDisplay").hidden = true;
         } else {
             if (timeToGuessSeconds <= 0 && timeToGuessMinutes > 0) {
                 timeToGuessMinutes -= 1;
@@ -292,13 +358,19 @@ function startPerGuessTimer() {
             } else {
                 timeToGuessSecondsDisplay = timeToGuessSeconds;
             }
+            if (timeToGuessSeconds <= 10 && timeToGuessMinutes <= 0) {
+                document.getElementById("per-GuessTimerDisplay").style.color = timerWarningColor;
+            }
             if (timeToGuessMinutes <= 0 && timeToGuessSeconds <= 0) {
+                document.getElementById("per-GuessTimerDisplay").style.color = timerExpiredColor;
                 clearInterval(timer3);
                 guessesRemaining = 0;
                 toastr.error("You didn't make a guess in time! Game over!");
                 guessTimerRunning = false;
+                hideMainTimer = false;
+                cancel2 = true;
             }
-            document.getElementById("per-GuessTimer").innerHTML = "You must make a guess in - " + timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
+            document.getElementById("per-GuessTimer").innerHTML = timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
         }
     }, 1000);
 }
@@ -326,7 +398,7 @@ let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - gues
 row.style.backgroundColor = guessingRowColor;
 
 function insertLetter (pressedKey) {
-    if (pressedKey === "F12") {
+    if (pressedKey === "F12" && !document.getElementById("enableLogging").checked) {
         console.log("Hmmm.... looking to cheat?");
     }
     if (nextLetter === wordLength || pressedKey === "F1" || pressedKey === "F2" || pressedKey === "F3" || pressedKey === "F4" || pressedKey === "F5" || pressedKey === "F6" || pressedKey === "F7" || pressedKey === "F8" || pressedKey === "F9" || pressedKey === "F10" || pressedKey === "F11" || pressedKey === "F12") {
@@ -380,7 +452,6 @@ function shadeKeyBoard(letter, color) {
                 const newArrayfour = toSend.split(",");
                 var oldColor = RGBtoHEX(Number(newArrayfour[0]), Number(newArrayfour[1]), Number(newArrayfour[2]));
             }
-            console.log(oldColor);
             if (oldColor === greenColor) {
                 if (document.getElementById("animations").checked) {
                     animateCSS(elem, "bounce", '1.0s');
@@ -418,6 +489,7 @@ function shadeKeyBoard(letter, color) {
 }
 
 function checkGuess () {
+
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
     let guessString = '';
     let rightGuess = Array.from(rightGuessString);
@@ -428,6 +500,8 @@ function checkGuess () {
 
     if (guessString === rightGuessString) {
         cancel2 = true;
+        hideMainTimer = false;
+        cancel3 = true;
     }
 
     if (guessString.length != wordLength) {
@@ -448,13 +522,28 @@ function checkGuess () {
         return;
     }
 
-    console.log("---------------- NEW GUESS ----------------");
-    console.log("Answer: " + rightGuessString);
+    timeToGuessMinutes = fixTimeToGuessMinutes;
+    timeToGuessSeconds = fixTimeToGuessSeconds;
+    var timeToGuessSecondsDisplay = timeToGuessSeconds;
+    if (timeToGuessSeconds < 10) {
+        timeToGuessSecondsDisplay = "0" + timeToGuessSeconds;
+    } else {
+        timeToGuessSecondsDisplay = timeToGuessSeconds;
+    }
+    document.getElementById("per-GuessTimer").innerHTML = timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
+
+    if (document.getElementById("enableLogging").checked) {
+        console.log("---------------- NEW GUESS ----------------");
+        console.log("Answer: " + rightGuessString);
+    }
     let yellowsLeft = rightGuess;
+    entireGuessTimeChange = 0;
 
     for (let i = 0; i < wordLength; i++) {
-        console.log("----");
-        console.log("Inspecting letter '" + currentGuess[i] + "' of " + currentGuess);
+        if (document.getElementById("enableLogging").checked) {
+            console.log("----");
+            console.log("Inspecting letter '" + currentGuess[i] + "' of " + currentGuess);
+        }
         let letterColor = '';
         let box = row.children[i];
         let letter = currentGuess[i];
@@ -467,6 +556,9 @@ function checkGuess () {
         } else {
             if (currentGuess[i] === rightGuess[i]) {
                 letterColor = greenColor;
+                if (lettersToBeFound.includes(currentGuess[i]) && mainTimerRunning) {
+                    timeChange += Number(greenTimeBonus);
+                }
                 let newArray = [];
                 let removeone = true;
                 for (let j = 0; j < lettersToBeFound.length; j++) {
@@ -509,21 +601,20 @@ function checkGuess () {
                     letterColor = yellowColor;
                     var existCount = 0;
                     if (currentGuessedLetterCount > 1 && currentGuessedLetterCount > letterCount) {
-                        for (let p = i; p <= wordLength - i; p++) {
-                            let temp = i + p - 1;
+                        for (let p = i; p - 1 <= wordLength - i; p++) {
+                            let temp = i + p - 2;
                             if (temp > 0) {
                                 if (currentGuess[temp] == rightGuess[temp] && currentGuess[temp] == currentGuess[i]) {
                                     existCount += 1;
                                 }
-                                console.log("p: " + p)
-                                console.log("i: " + i)
-                                console.log("temp: " + temp)
                             }
                         }
                         if (existCount >= letterCount) {
                             letterColor = greyColor;
                         }
-                        console.log("This letter exists " + existCount + " times forward in the guess in the correct place, and " + letterCount + " times in the answer.")
+                        if (document.getElementById("enableLogging").checked) {
+                            console.log("This letter exists " + existCount + " times forward in the guess in the correct place, and " + letterCount + " times in the answer.")
+                        }
                     }
                     let newArraythree = [];
                     let removethree = true;
@@ -542,11 +633,55 @@ function checkGuess () {
                 }
             }
         }
-        console.log("LetterCount: " + letterCount);
-        console.log("Right letter: " + rightGuess[i]);
-        console.log("yellowsLeft: " + yellowsLeft);
-        console.log("LettersToBeFound: " + lettersToBeFound);
-        console.log("IndexesToBeFound: " + indexesToBeFound);
+
+        if (document.getElementById("enableLogging").checked) {
+            console.log("currectGuessedLetterCount: " + currentGuessedLetterCount);
+            console.log("LetterCount: " + letterCount);
+            console.log("Right letter: " + rightGuess[i]);
+            console.log("yellowsLeft: " + yellowsLeft);
+            console.log("LettersToBeFound: " + lettersToBeFound);
+            console.log("IndexesToBeFound: " + indexesToBeFound);
+            console.log("===> letterColor: " + letterColor);
+        }
+
+        if (mainTimerRunning) {
+            if (letterColor === yellowColor) {
+                timeChange += Number(yellowTimeBonus);
+            }
+            if (letterColor === greyColor) {
+                timeChange -= Number(greyTimePenalty);
+            }
+            if (document.getElementById("enableLogging").checked) {
+                console.log("totalSecondsLeft Before: " + totalSecondsLeft);
+                console.log("Overall timeChange: " + timeChange);
+            }
+            allowReset = false;
+            totalSecondsLeft += timeChange;
+            entireGuessTimeChange += timeChange;
+            timeChange = 0;
+            if (document.getElementById("enableLogging").checked) {
+                console.log("totalSecondsLeft After: " + totalSecondsLeft);
+            }
+            if (totalSecondsLeft > 59) {
+                while (totalSecondsLeft > 59) {
+                    totalMinutesLeft += 1;
+                    totalSecondsLeft -= 60;
+                    console.log('plusMinutes');
+                }
+            }
+            if (totalSecondsLeft < 0 && totalMinutesLeft > 0) {
+                while (totalSecondsLeft < 0 && totalMinutesLeft > 0) {
+                    totalSecondsLeft += 60;
+                    totalMinutesLeft -= 1;
+                    console.log("minusMinutes");
+                }
+            }
+            if (totalSecondsLeft <= 0 && totalMinutesLeft <= 0) {
+                totalSecondsLeft = 1;
+                totalMinutesLeft = 0;
+            }
+            allowReset = true;
+        }
 
 
         if (document.getElementById("animations").checked) {
@@ -564,6 +699,22 @@ function checkGuess () {
             box.style.color = 'white';
             shadeKeyBoard(letter, letterColor);
         }, delay)
+    }
+
+    if (mainTimerRunning) {
+        var a = document.getElementById("change");
+        if (entireGuessTimeChange > 0) {
+            a.style.color = timeChangePositiveColor;
+            a.innerHTML = "+" + entireGuessTimeChange + "s";
+        }
+        if (entireGuessTimeChange === 0) {
+            a.style.color = noTimeChangeColor;
+            a.innerHTML = "0";
+        }
+        if (entireGuessTimeChange < 0) {
+            a.style.color = timeChangeNegativeColor;
+            a.innerHTML = entireGuessTimeChange + "s";
+        }
     }
 
     if (guessString === rightGuessString) {
@@ -603,7 +754,7 @@ function delay(milliseconds) {
 }
 
 async function correctGuessBounce() {
-    await delay(150 * wordLength);
+    await delay((200 * wordLength) - (wordLength * 3));
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - kept];
     for (let i = 0; i < wordLength; i++) {
         let box = row.children[i];

@@ -17,8 +17,19 @@
     <body>
         <h1 id="title">Wordle</h1>
 
-        <div id="mainTimer"></div>
-        <div id="per-GuessTimer"></div>
+        <div id="timersDisplay">
+            <table>
+                <tr id="mainTimerDisplay" hidden>
+                    <td class="mediumText">Total Time Left</td>
+                    <td class="shortText" id="mainTimer" style="border-right: none;"></td>
+                    <td class="shortText" id="change" style="border-left: none; width: 50px;"></td>
+                </tr>
+                <tr id="per-GuessTimerDisplay" hidden>
+                    <td class="mediumText">Time to Make a Guess</td>
+                    <td class="shortText" id="per-GuessTimer" colspan="2"></td>
+                </tr>
+            </table>
+        </div>
 
         <div id="game-board"></div>
 
@@ -61,7 +72,7 @@
             </div>
         </div>
         
-        <p id="settingsLine"><button id="showSettings" class="button"><img src="settings.png" alt="Show/Hide Settings" title="Show/Hide Settings" style="width: 76px;"></button><button id="openColorConfig" class="button" onclick="var a = document.getElementById('main'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}"><img src="colors_2.png" alt="Customize Colors" title="Customize Colors" style="width: 51px;"></button><button id="restart" class="button"><img src="restart.png" alt="Restart" title="Restart" style="width: 54px;"></button><button id="openTimers" class="button"><img src="timers.jpg" alt="Open Timer Config" title="Open Timer Config" onclick="var a = document.getElementById('timers'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}" style="width: 51.5px;"></button></p>
+        <p id="settingsLine"><button id="showSettings" class="button"><img src="settings.png" alt="Show/Hide Settings" title="Show/Hide Settings" style="width: 76px;"></button><button id="openColorConfig" class="button" onclick="var a = document.getElementById('main'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}"><img src="colors_2.png" alt="Customize Colors" title="Customize Colors" style="width: 51px;"></button><button id="restart" class="button"><img src="restart.png" alt="Restart" title="Restart" style="width: 54px;"></button><button id="openTimers" class="button" onclick="var a = document.getElementById('timers'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}"><img src="timers.jpg" alt="Open Timer Config" title="Open Timer Config" style="width: 51.5px;"></button><button class="button" id="openDebugOptions" onclick="var a = document.getElementById('debug'); if (a.hidden === true) {a.hidden = false;} else {a.hidden = true;}"><img src="debug.png" alt="Open Debug Options" title="Open Debug Options" style="width: 60px;"></button></p>
         <p id="countdownLine"><span id="countdown"></span><input type="button" value="cancel" id="cancel" hidden></p>
         <div id="settings" hidden>
             <p id="autoRestartLine"><label><input type="checkbox" name="autoRestart" id="autoRestart">Auto Restart after correct guess</label><br>Cooldown: <input type="number" name="autoRestartCooldown" id="autoRestartCooldown" value="3" min="1" class="input"></p>
@@ -102,6 +113,16 @@
                         <td class="mediumText">Input section's <br> text color <input type="color" name="inputBGColor" id="inputLetterColor" value="#FFFFFF"></td>
                         <td class="mediumText">Input section's <br> border color <input type="color" name="inputBorderColor" id="inputBorderColor" value="#D3D3D3"></td>
                     </tr>
+                    <tr>
+                        <td class="mediumText">Timer warning color <input type="color" name="timerWarningColor" id="timerWarningColor" value="#FFFF00"></td>
+                        <td class="mediumText">Timer expired color <input type="color" name="timerExpiredColor" id="timerExpiredColor" value="#FF0000"></td>
+                        <td class="mediumText">Inactive timer color <input type="color" name="inactiveTimerColor" id="inactiveTimerColor" value="#777777"></td>
+                    </tr>
+                    <tr>
+                        <td class="shortText">Time change + <input type="color" name="timePlusColor" id="timePlusColor" value="#00FF00"></td>
+                        <td class="shortText">Time change = <input type="color" name="timeStaysColor" id="timeStaysColor" value="#FFE135"></td>
+                        <td class="shortText">Time change - <input type="color" name="timeMinusColor" id="timeMinusColor" value="#FF0000"></td>
+                    </tr>
                 </table>
             <div id="saveColorConfig" style="margin-top: 50px;">
                 <p id="save"><button id="saveColorConfigButton" class="button"><img src="apply.png" alt="Save" title="Note: A restart or a guess may be needed for the changes to take effect." style="width: 60px;"></button></p>
@@ -113,7 +134,7 @@
                 <table>
                     <tr>
                         <td class="shortText">Main Time Limit</td>
-                        <td class="mediumText"><input type="number" name="mainTimeLimitMinutes" id="mainTimeLimitMinutes" class="input" value="5" min="0"> m <input type="number" name="mainTimeLimitSeconds" id="mainTimeLimitSeconds" class="input" value="30" min="0" max="59"> s</td>
+                        <td class="mediumText"><input type="number" name="mainTimeLimitMinutes" id="mainTimeLimitMinutes" class="input" value="2" min="0"> m <input type="number" name="mainTimeLimitSeconds" id="mainTimeLimitSeconds" class="input" value="30" min="0" max="59"> s</td>
                     </tr>
                     <tr>
                         <td class="mediumText">Time bonus after each <br> green letter found</td>
@@ -121,7 +142,7 @@
                     </tr>
                     <tr>
                         <td class="mediumText">Time bonus after each <br> yellow letter found</td>
-                        <td class="shortText"><input type="number" name="mainTimeBonusYellow" id="mainTimeBonusYellow" class="input" value="25" min="0" max="59"> s</td>
+                        <td class="shortText"><input type="number" name="mainTimeBonusYellow" id="mainTimeBonusYellow" class="input" value="10" min="0" max="59"> s</td>
                     </tr>
                     <tr>
                         <td class="mediumText">Time penalty after each <br> grey letter</td>
@@ -140,7 +161,7 @@
                 <table>
                     <tr>
                         <td class="shortText">Time to make a Guess (individual)</td>
-                        <td class="mediumText"><input type="number" name="per-GuessTimerMinutes" id="per-GuessTimerMinutes" class="input" value="1" min="0"> m <input type="number" name="per-GuessTimerSeconds" id="per-GuessTimerSeconds" class="input" value="15" min="0" max="59"> s</td>
+                        <td class="mediumText"><input type="number" name="per-GuessTimerMinutes" id="per-GuessTimerMinutes" class="input" value="1" min="0"> m <input type="number" name="per-GuessTimerSeconds" id="per-GuessTimerSeconds" class="input" value="25" min="0" max="59"> s</td>
                     </tr>
                     <tr>
                         <td colspan="2"><button class="button" id="startTimer2"><img src="start_1.png" alt="Start/Restart Timer" title="Start/Restart Timer (Note: Also generates a new word to guess)" style="width: 125px;"></button><button class="button" id="cancelPer-GuessTimer"><img src="cancel.png" alt="Cancel Timer" title="Cancel Timer (Note: this also generates a new word to guess)" style="width: 47px;"></button></td>
@@ -148,6 +169,9 @@
                 </table>
             </div>
         </div>
-        <footer style="font-size: 0.1em; color: black !important; text-align: center;"><a href='https://pngtree.com/so/start' style="font-size: 0.1em; color: black !important; text-decoration: none;">start png from pngtree.com/</a></footer>
+        <div id="debug" hidden>
+            <p id="enableLoggingLine"><label><input type="checkbox" name="enableLogging" id="enableLogging">Enable Logging to Console</label></p>
+        </div>
+        <footer style="font-size: 0.1em; color: black !important; text-align: center;"><a href='https://pngtree.com/so/start' target="_blank" style="font-size: 0.1em; color: black !important; text-decoration: none;">start png from pngtree.com/</a></footer>
     </body>
 </html>

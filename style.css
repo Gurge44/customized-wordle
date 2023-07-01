@@ -115,7 +115,7 @@ body {
     margin-right: 30px;
 }
 
-#showSettings, #openColorConfig, #saveColorConfigButton, #openTimers, #startTimer, #startTimer2, #cancelMainTimer, #cancelPer-GuessTimer {
+#showSettings, #openColorConfig, #saveColorConfigButton, #openTimers, #startTimer, #startTimer2, #cancelMainTimer, #cancelPer-GuessTimer, #openDebugOptions {
     width: fit-content;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1em;
@@ -152,7 +152,7 @@ body {
     transition: 0.2s;
 }
 
-#autoRestartLine, #animationsLine, #settingsLine, #enableMainTimerLine, #enablePer-GuessTimerLine {
+#autoRestartLine, #animationsLine, #settingsLine, #enableMainTimerLine, #enablePer-GuessTimerLine, #enableLoggingLine {
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.5em;
@@ -162,7 +162,7 @@ body {
     transition: 0.2s;
 }
 
-#autoRestart, #animations, #enableMainTimer, #enablePer-GuessTimer {
+#autoRestart, #animations, #enableMainTimer, #enablePer-GuessTimer, #enableLogging {
     scale: 1.5;
     margin-right: 10px;
     transition: 0.2s;
@@ -208,7 +208,7 @@ body {
     transition: 0.2s;
 }
 
-#main, #mainTimerSettings, #per-GuessTimerSettings, #mainTimer, #per-GuessTimer {
+#main, #mainTimerSettings, #per-GuessTimerSettings, #timersDisplay, #debug {
     text-align: center;
     margin: auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -293,3 +293,12 @@ input[type=color] {
     padding-left: 9px;
 }
 
+#timersDisplay {
+    margin-bottom: 20px;
+}
+
+#openDebugOptions {
+    padding-top: 7px;
+    padding-left: 8px;
+    margin-left: 30px;
+}
