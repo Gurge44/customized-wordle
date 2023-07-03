@@ -2,8 +2,12 @@
 A simple wordle built in html, css and javascript. This is a project for me to learn Javascript.
 
 ## MAIN FEATURES
-- Animate.css animations
+- Animate.css animations + fireworks on correct guess
 - Ability to change the number of guesses you have (1-30)
+- Ability to change the word length (3 - 16 letter words)
+- Optional time limit to find the word (+ optional: bonus time for yellow & green letters, penalty for grey letters)
+- Optional time limit to make a guess
+- Easily change the color of nearly everything without editing the code
 - Restart easily as many times as you want (+ option to Auto-Restart after correct guesses)
 - No limitations in any way, feel free to use the source code, but if you do, I would be happy if you at least mentioned my name. Thanks!
 
@@ -14,7 +18,7 @@ A simple wordle built in html, css and javascript. This is a project for me to l
 - Right click in the index.html code > choose Open with Live Server (you need the live server extension) (it may also work without opening it as a Live Server)
 - Enjoy.
 
-## IMAGES
+## IMAGES (outdated)
 ![example 1](https://i.imgur.com/fy1cvUm.png)
 ![example 2](https://i.imgur.com/wNqWHXt.png)
 ![example 3](https://i.imgur.com/28uSViU.png)
