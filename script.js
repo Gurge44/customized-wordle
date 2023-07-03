@@ -32,11 +32,11 @@ for (let o = 0; o < wordLength; o++) {
     indexesToBeFound.push(o);
 }
 var greenColor = "#008000";
-var yellowColor = "#AFAF00";
+var yellowColor = "#afaf00";
 var greyColor = "#000000";
-var guessingRowLetterColor = "#00FFFF";
+var guessingRowLetterColor = "#00ffff";
 var guessingRowColor = "#141432";
-var invalidColor = "#FF0000";
+var invalidColor = "#ff0000";
 var totalMinutesLeft = 0;
 var totalSecondsLeft = 1;
 var cancel2 = false;
@@ -48,8 +48,8 @@ var cancel3 = false;
 var mainTimerRunning = false;
 var guessTimerRunning = false;
 var hideMainTimer = true;
-var timerExpiredColor = "#FF0000";
-var timerWarningColor = "#FFFF00";
+var timerExpiredColor = "#ff0000";
+var timerWarningColor = "#ffff00";
 var inactiveTimerColor = "#777777";
 var greenTimeBonus = 40;
 var yellowTimeBonus = 10;
@@ -57,9 +57,9 @@ var greyTimePenalty = 5;
 var timeChange = 0;
 var allowReset = true;
 var entireGuessTimeChange = 0;
-var timeChangePositiveColor = "#00FF00";
-var noTimeChangeColor = "#FFE135";
-var timeChangeNegativeColor = "#FF0000";
+var timeChangePositiveColor = "#00ff00";
+var noTimeChangeColor = "#ffe135";
+var timeChangeNegativeColor = "#ff0000";
 
 function applyColorConfig() {
     document.body.style.backgroundColor = document.getElementById("BackgroundColor").value;
@@ -117,32 +117,46 @@ function changeWordLength() {
         nextLetter = 0;
         if (wordLength === 5) {
             rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+            document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 6) {
             rightGuessString = SIXLETTERWORDS[Math.floor(Math.random() * SIXLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         } else if (wordLength === 7) {
             rightGuessString = SEVENLETTERWORDS[Math.floor(Math.random() * SEVENLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 8) {
             rightGuessString = EIGHTLETTERWORDS[Math.floor(Math.random() * EIGHTLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 3) {
             rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         } else if (wordLength === 4) {
             rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 9) {
             rightGuessString = NINELETTERWORDS[Math.floor(Math.random() * NINELETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         } else if (wordLength === 10) {
             rightGuessString = TENLETTERWORDS[Math.floor(Math.random() * TENLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         } else if (wordLength === 11) {
             rightGuessString = ELEVENLETTERWORDS[Math.floor(Math.random() * ELEVENLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         } else if (wordLength === 12) {
             rightGuessString = TWELVELETTERWORDS[Math.floor(Math.random() * TWELVELETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         } else if (wordLength === 13) {
             rightGuessString = THIRTEENLETTERWORDS[Math.floor(Math.random() * THIRTEENLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 14) {
             rightGuessString = FOURTEENLETTERWORDS[Math.floor(Math.random() * FOURTEENLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 15) {
             rightGuessString = FIFTEENLETTERWORDS[Math.floor(Math.random() * FIFTEENLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         } else if (wordLength === 16) {
             rightGuessString = SIXTEENLETTERWORDS[Math.floor(Math.random() * SIXTEENLETTERWORDS.length)]
+            document.getElementById("tooFewWords").hidden = false;
         }
         document.getElementById("game-board").innerHTML = "";
         initBoard();
@@ -178,32 +192,46 @@ function changeNumOfGuesses() {
     nextLetter = 0;
     if (wordLength === 5) {
         rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 6) {
         rightGuessString = SIXLETTERWORDS[Math.floor(Math.random() * SIXLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 7) {
         rightGuessString = SEVENLETTERWORDS[Math.floor(Math.random() * SEVENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 8) {
         rightGuessString = EIGHTLETTERWORDS[Math.floor(Math.random() * EIGHTLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 3) {
         rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 4) {
         rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 9) {
         rightGuessString = NINELETTERWORDS[Math.floor(Math.random() * NINELETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 10) {
         rightGuessString = TENLETTERWORDS[Math.floor(Math.random() * TENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 11) {
         rightGuessString = ELEVENLETTERWORDS[Math.floor(Math.random() * ELEVENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 12) {
         rightGuessString = TWELVELETTERWORDS[Math.floor(Math.random() * TWELVELETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 13) {
         rightGuessString = THIRTEENLETTERWORDS[Math.floor(Math.random() * THIRTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 14) {
         rightGuessString = FOURTEENLETTERWORDS[Math.floor(Math.random() * FOURTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 15) {
         rightGuessString = FIFTEENLETTERWORDS[Math.floor(Math.random() * FIFTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 16) {
         rightGuessString = SIXTEENLETTERWORDS[Math.floor(Math.random() * SIXTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     }
     document.getElementById("game-board").innerHTML = "";
     initBoard();
@@ -238,6 +266,7 @@ document.querySelector('#showSettings').addEventListener("click", () => {
 });
 
 function startTimers() {
+    document.getElementById("change").innerHTML = "";
     restart();
     if (document.getElementById("enableMainTimer").checked && !mainTimerRunning) {
         startMainTimer();
@@ -398,7 +427,7 @@ row.style.backgroundColor = guessingRowColor;
 
 function insertLetter (pressedKey) {
     if (pressedKey === "F12" && !document.getElementById("enableLogging").checked) {
-        console.log("Hmmm.... looking to cheat?");
+        console.log("You might want to tick 'Enable Logging to Console' to have something useful here....");
     }
     if (nextLetter === wordLength || pressedKey === "F1" || pressedKey === "F2" || pressedKey === "F3" || pressedKey === "F4" || pressedKey === "F5" || pressedKey === "F6" || pressedKey === "F7" || pressedKey === "F8" || pressedKey === "F9" || pressedKey === "F10" || pressedKey === "F11" || pressedKey === "F12") {
         return
@@ -487,7 +516,7 @@ function shadeKeyBoard(letter, color) {
     }
 }
 
-function checkGuess () {
+function checkGuess() {
 
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
     let guessString = '';
@@ -750,6 +779,33 @@ function delay(milliseconds) {
     });
 }
 
+async function fireWorks() {
+    var nthChild = 1;
+    for (const elem of document.getElementsByClassName("firework")) {
+        if (nthChild !== 3) {
+            elem.hidden = false;
+            elem.style.animation = "firework 2.5s infinite";
+            await delay(400);
+        }
+        nthChild += 1;
+    }
+    setTimeout(() => {
+        hideFireWorks();
+    }, 3499)
+}
+
+async function hideFireWorks() {
+    var nthChild = 1;
+    for (const elem of document.getElementsByClassName("firework")) {
+        if (nthChild !== 3) {
+            elem.hidden = true;
+            elem.style.animation = "none";
+            await delay(400);
+        }
+        nthChild += 1;
+    }
+}
+
 async function correctGuessBounce() {
     await delay((200 * wordLength) - (wordLength * 3));
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - kept];
@@ -760,6 +816,8 @@ async function correctGuessBounce() {
     }
     toastr.success("You guessed right! Game over!")
     onCooldown = false;
+    await delay(1000);
+    fireWorks();
 }
 
 document.getElementById("error").innerHTML = ""
@@ -860,7 +918,7 @@ function restart() {
                 restart();
                 onCooldown = false;
                 restartInQueue = false;
-            }, 350 * wordLength);
+            }, 350 * wordLength + 3500);
             return;
         }
     }
@@ -881,32 +939,46 @@ function restart() {
     nextLetter = 0;
     if (wordLength === 5) {
         rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 6) {
         rightGuessString = SIXLETTERWORDS[Math.floor(Math.random() * SIXLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 7) {
         rightGuessString = SEVENLETTERWORDS[Math.floor(Math.random() * SEVENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 8) {
         rightGuessString = EIGHTLETTERWORDS[Math.floor(Math.random() * EIGHTLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 3) {
         rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 4) {
         rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 9) {
         rightGuessString = NINELETTERWORDS[Math.floor(Math.random() * NINELETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 10) {
         rightGuessString = TENLETTERWORDS[Math.floor(Math.random() * TENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 11) {
         rightGuessString = ELEVENLETTERWORDS[Math.floor(Math.random() * ELEVENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 12) {
         rightGuessString = TWELVELETTERWORDS[Math.floor(Math.random() * TWELVELETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 13) {
         rightGuessString = THIRTEENLETTERWORDS[Math.floor(Math.random() * THIRTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 14) {
         rightGuessString = FOURTEENLETTERWORDS[Math.floor(Math.random() * FOURTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 15) {
         rightGuessString = FIFTEENLETTERWORDS[Math.floor(Math.random() * FIFTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     } else if (wordLength === 16) {
         rightGuessString = SIXTEENLETTERWORDS[Math.floor(Math.random() * SIXTEENLETTERWORDS.length)]
+        document.getElementById("tooFewWords").hidden = false;
     }
     document.getElementById("game-board").innerHTML = "";
     initBoard();

@@ -1589,6 +1589,7 @@ export const SIXLETTERWORDS = [
     'horror',
     'horses',
     'hosted',
+    'hostel',
     'hotels',
     'hourly',
     'housed',

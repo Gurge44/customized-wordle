@@ -31,6 +31,11 @@
             </table>
         </div>
 
+        <div class="firework" hidden></div>
+        <div class="firework" hidden></div>
+        <div class="firework" hidden></div>
+        <div class="firework" hidden></div>
+
         <div id="game-board"></div>
 
         <p id="error">Failed to load the script file. Make sure you opened index.html as a Live Server, and the script.js and the style.css files are in the same folder as index.html</p>
@@ -78,50 +83,50 @@
             <p id="autoRestartLine"><label><input type="checkbox" name="autoRestart" id="autoRestart">Auto Restart after correct guess</label><br>Cooldown: <input type="number" name="autoRestartCooldown" id="autoRestartCooldown" value="3" min="1" class="input"></p>
             <p id="animationsLine"><label><input type="checkbox" name="animations" id="animations" checked>Enable Animations</label></p>
             <p id="numOfGuesses" title="Changing this value automatically restarts the game and generates a new word to guess.">Number of Guesses: <input type="number" name="numOfGuessesType" id="numOfGuessesType" min="1" max="20" value="9" class="input"></p>
-            <p id="wordLength" title="Changing this value automatically restarts the game and generates a new word to guess.">Word Length: <input type="number" name="wordLengthInput" id="wordLengthInput" min="3" max="16" value="5" class="input"></p>
+            <p id="wordLength" title="Changing this value automatically restarts the game and generates a new word to guess.">Word Length: <input type="number" name="wordLengthInput" id="wordLengthInput" min="3" max="16" value="5" class="input"> <span id="tooFewWords" hidden title="The database is a bit weak of words in the length you chose. Some valid words may not be accepted.">⚠️</span></p>
         </div>
         <div id="main" hidden>
             <h2 style="color: rgb(0, 255, 200);" id="h2title">Color customization</h2>
                 <table>
                     <tr>
                         <td class="shortText">Background color <input type="color" name="BackgroundColor" id="BackgroundColor" value="#191919"></td>
-                        <td class="shortText">Text color <input type="color" name="letterColor" id="letterColor" value="#FFFFFF"></td>
-                        <td class="shortText">Outline color <input type="color" name="outlineColor" id="outlineColor" value="#A9A9A9"></td>
+                        <td class="shortText">Text color <input type="color" name="letterColor" id="letterColor" value="#ffffff"></td>
+                        <td class="shortText">Outline color <input type="color" name="outlineColor" id="outlineColor" value="#a9a9a9"></td>
                     </tr>
                     <tr>
                         <td class="mediumText">Current guessing row's <br> background color <input type="color" name="currentGuessBGColor" id="currentGuessBGColor" value="#141432"></td>
-                        <td class="mediumText">Current guessing row's <br> letter color <input type="color" name="currentGuessLetterColor" id="currentGuessLetterColor" value="#00FFFF"></td>
-                        <td class="longText">Current guessing row's temporary <br> background color on invalid guess <input type="color" name="incorrectGuessRowColor" id="incorrectGuessRowColor" value="#FF0000"></td>
+                        <td class="mediumText">Current guessing row's <br> letter color <input type="color" name="currentGuessLetterColor" id="currentGuessLetterColor" value="#00ffff"></td>
+                        <td class="longText">Current guessing row's temporary <br> background color on invalid guess <input type="color" name="incorrectGuessRowColor" id="incorrectGuessRowColor" value="#ff0000"></td>
                     </tr>
                     <tr>
                         <td class="mediumText">Green letters' color <input type="color" name="greenColor" id="greenColor" value="#008000"></td>
-                        <td class="mediumText">Yellow letters' color <input type="color" name="yellowColor" id="yellowColor" value="#AFAF00"></td>
+                        <td class="mediumText">Yellow letters' color <input type="color" name="yellowColor" id="yellowColor" value="#afaf00"></td>
                         <td class="mediumText">Grey letters' color <input type="color" name="greyColor" id="greyColor" value="#000000"></td>
                     </tr>
                     <tr>
-                        <td class="mediumText">Keyboard button <br> background color <input type="color" name="keyboardBGColor" id="keyboardBGColor" value="#0C0C0C"></td>
-                        <td class="mediumText">Keyboard button <br> default letter color <input type="color" name="keyboardLetterColor" id="keyboardLetterColor" value="#D3D3D3"></td>
+                        <td class="mediumText">Keyboard button <br> background color <input type="color" name="keyboardBGColor" id="keyboardBGColor" value="#0c0c0c"></td>
+                        <td class="mediumText">Keyboard button <br> default letter color <input type="color" name="keyboardLetterColor" id="keyboardLetterColor" value="#d3d3d3"></td>
                         <td class="shortText">h1 title color <input type="color" name="titleColor" id="titleColor" value="#FFFFFF"></td>
                     </tr>
                     <tr>
                         <td class="longText">Buttons' background color <input type="color" name="buttonBGColor" id="buttonBGColor" value="#000000"></td>
-                        <td class="longText" id="happyEaster">This text's color <br> (easter egg) <input type="color" name="easterEgg" id="easterEgg" value="#FFFFFF"></td>
-                        <td class="shortText">h2 title color <input type="color" name="h2TitleColor" id="h2TitleColor" value="#00FFC8"></td>
+                        <td class="longText" id="happyEaster">This text's color <br> (easter egg) <input type="color" name="easterEgg" id="easterEgg" value="#ffffff"></td>
+                        <td class="shortText">h2 title color <input type="color" name="h2TitleColor" id="h2TitleColor" value="#00ffc8"></td>
                     </tr>
                     <tr>
                         <td class="mediumText">Input section's <br> background color <input type="color" name="inputBGColor" id="inputBGColor" value="#000000"></td>
-                        <td class="mediumText">Input section's <br> text color <input type="color" name="inputBGColor" id="inputLetterColor" value="#FFFFFF"></td>
-                        <td class="mediumText">Input section's <br> border color <input type="color" name="inputBorderColor" id="inputBorderColor" value="#D3D3D3"></td>
+                        <td class="mediumText">Input section's <br> text color <input type="color" name="inputBGColor" id="inputLetterColor" value="#ffffff"></td>
+                        <td class="mediumText">Input section's <br> border color <input type="color" name="inputBorderColor" id="inputBorderColor" value="#d3d3d3"></td>
                     </tr>
                     <tr>
-                        <td class="mediumText">Timer warning color <input type="color" name="timerWarningColor" id="timerWarningColor" value="#FFFF00"></td>
-                        <td class="mediumText">Timer expired color <input type="color" name="timerExpiredColor" id="timerExpiredColor" value="#FF0000"></td>
+                        <td class="mediumText">Timer warning color <input type="color" name="timerWarningColor" id="timerWarningColor" value="#ffff00"></td>
+                        <td class="mediumText">Timer expired color <input type="color" name="timerExpiredColor" id="timerExpiredColor" value="#ff0000"></td>
                         <td class="mediumText">Inactive timer color <input type="color" name="inactiveTimerColor" id="inactiveTimerColor" value="#777777"></td>
                     </tr>
                     <tr>
-                        <td class="shortText">Time change + <input type="color" name="timePlusColor" id="timePlusColor" value="#00FF00"></td>
-                        <td class="shortText">Time change = <input type="color" name="timeStaysColor" id="timeStaysColor" value="#FFE135"></td>
-                        <td class="shortText">Time change - <input type="color" name="timeMinusColor" id="timeMinusColor" value="#FF0000"></td>
+                        <td class="shortText">Time change + <input type="color" name="timePlusColor" id="timePlusColor" value="#00ff00"></td>
+                        <td class="shortText">Time change = <input type="color" name="timeStaysColor" id="timeStaysColor" value="#ffe135"></td>
+                        <td class="shortText">Time change - <input type="color" name="timeMinusColor" id="timeMinusColor" value="#ff0000"></td>
                     </tr>
                 </table>
             <div id="saveColorConfig" style="margin-top: 50px;">
