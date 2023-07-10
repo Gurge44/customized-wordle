@@ -340,6 +340,7 @@ function startMainTimer() {
                 clearInterval(timer2);
                 guessesRemaining = 0;
                 toastr.error("You ran out of time! Game over!");
+                toastr.info(`The right word was: "${rightGuessString}"`)
                 mainTimerRunning = false;
                 cancel3 = true;
             }
@@ -394,6 +395,7 @@ function startPerGuessTimer() {
                 clearInterval(timer3);
                 guessesRemaining = 0;
                 toastr.error("You didn't make a guess in time! Game over!");
+                toastr.info(`The right word was: "${rightGuessString}"`)
                 guessTimerRunning = false;
                 hideMainTimer = false;
                 cancel2 = true;
@@ -767,8 +769,8 @@ function checkGuess() {
         }
 
         if (guessesRemaining <= 0) {
-            toastr.error("You've run out of guesses! Game over!")
-            toastr.info(`The right word was: "${rightGuessString}"`)
+            toastr.error("You've run out of guesses! Game over!");
+            toastr.info(`The right word was: "${rightGuessString}"`);
         }
     }
 }
