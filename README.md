@@ -1,3 +1,5 @@
+### Try it out for yourself at: https://gurge44.github.io/customized-wordle/
+
 # Customized Wordle
 A simple wordle built in html, css and javascript. This is a project for me to learn Javascript.
 
@@ -11,7 +13,7 @@ A simple wordle built in html, css and javascript. This is a project for me to l
 - Restart easily as many times as you want (+ option to Auto-Restart after correct guesses)
 - No limitations in any way, feel free to use the source code, but if you do, I would be happy if you at least mentioned my name. Thanks!
 
-## HOW TO USE - INSTALLATION GUIDE
+## HOW TO EDIT THE CODE YOURSELF AND DEBUG IT
 - Download the "customized-wordle-vX.X.X.zip" file under the latest release
 - Make a new folder and put all downloaded files in there
 - Open that folder in Visual Studio Code
