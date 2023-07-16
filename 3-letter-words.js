@@ -983,4 +983,5 @@ export const THREELETTERWORDS = [
     'zit',
     'zoa',
     'zoo',
+    'ufo',
 ]
