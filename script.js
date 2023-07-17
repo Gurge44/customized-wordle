@@ -1,5 +1,5 @@
 document.getElementById("error").innerHTML = "Loading....";
-let version = "v3.0.4+";
+let version = "v3.0.5";
 document.getElementById("title").innerText = "Customized Wordle " + version;
 toastr.options.progressBar = true;
 
@@ -62,6 +62,8 @@ var entireGuessTimeChange = 0;
 var timeChangePositiveColor = "#00ff00";
 var noTimeChangeColor = "#ffe135";
 var timeChangeNegativeColor = "#ff0000";
+var isSquare = true;
+var isGuessCheckInProgress = false;
 
 function applyColorConfig() {
     document.body.style.backgroundColor = document.getElementById("BackgroundColor").value;
@@ -269,6 +271,15 @@ document.querySelector('#showSettings').addEventListener("click", () => {
 
 function startTimers() {
     document.getElementById("change").innerHTML = "";
+    if (!document.getElementById("squareFont").checked) {
+        document.getElementById("per-GuessTimer").style.fontFamily = 'Segoe UI';
+        document.getElementById("mainTimer").style.fontFamily = 'Segoe UI';
+        isSquare = false;
+    } else {
+        document.getElementById("per-GuessTimer").style.fontFamily = 'squareFont';
+        document.getElementById("mainTimer").style.fontFamily = 'squareFont';
+        isSquare = true;
+    }
     restart();
     if (document.getElementById("enableMainTimer").checked && !mainTimerRunning) {
         startMainTimer();
@@ -325,10 +336,36 @@ function startMainTimer() {
                 totalSecondsLeft = 60;
             }
             totalSecondsLeft -= 1;
+            var pull = 0;
+            var pull2 = 0;
+            var pull3 = 0;
+            var pull4 = 0;
             if (totalSecondsLeft < 10) {
                 totalSecondsLeftDisplay = "0" + totalSecondsLeft;
             } else {
                 totalSecondsLeftDisplay = totalSecondsLeft;
+            }
+            if (isSquare) {
+                if (totalSecondsLeft <= 19 && totalSecondsLeft >= 10) {
+                    pull = 8;
+                } else {
+                    pull = 0;
+                }
+                if (totalSecondsLeft % 10 === 1) {
+                    pull2 = 10;
+                } else {
+                    pull2 = 3;
+                }
+                if (totalMinutesLeft <= 19 && totalMinutesLeft >= 10) {
+                    pull3 = 8;
+                } else {
+                    pull3 = 0;
+                }
+                if (totalMinutesLeft % 10 === 1) {
+                    pull4 = 10;
+                } else {
+                    pull4 = 3;
+                }
             }
             if (totalSecondsLeft <= warningTime && totalMinutesLeft <= 0) {
                 if (outputWarn) {
@@ -346,7 +383,7 @@ function startMainTimer() {
                 mainTimerRunning = false;
                 cancel3 = true;
             }
-            document.getElementById("mainTimer").innerHTML = totalMinutesLeft + ":" + totalSecondsLeftDisplay;
+            document.getElementById("mainTimer").innerHTML = "<nobr><span style='margin-left: " + pull3 + "px; letter-spacing: " + pull4 + "px;'>" + totalMinutesLeft + "</span>:<span style='margin-left: " + pull + "px; letter-spacing: " + pull2 + "px;'>" + totalSecondsLeftDisplay + "</span></nobr>";
         }
     }, 1000);
 }
@@ -521,6 +558,8 @@ function shadeKeyBoard(letter, color) {
 }
 
 function checkGuess() {
+
+    isGuessCheckInProgress = true;
 
     let row = document.getElementsByClassName("letter-row")[NUMBER_OF_GUESSES - guessesRemaining]
     let guessString = '';
@@ -775,6 +814,7 @@ function checkGuess() {
             toastr.info(`The right word was: "${rightGuessString}"`);
         }
     }
+    isGuessCheckInProgress = false;
 }
 
 function delay(milliseconds) {
@@ -910,6 +950,12 @@ document.querySelector('#cancel').addEventListener("click", () => cancelAutoRest
 
 function restart() {
     if (guessesRemaining === NUMBER_OF_GUESSES) {
+        return;
+    }
+    if (isGuessCheckInProgress) {
+        setTimeout(() => {
+            restart();
+        }, 100);
         return;
     }
     if (onCooldown) {
