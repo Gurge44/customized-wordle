@@ -1361,6 +1361,7 @@ export const SIXLETTERWORDS = [
     'editor',
     'effect',
     'effort',
+    'egoist',
     'eighth',
     'either',
     'elders',
