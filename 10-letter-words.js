@@ -1130,6 +1130,7 @@ export const TENLETTERWORDS = [
     'deoxidized',
     'deoxidizer',
     'deoxidizes',
+    'department',
     'diazotized',
     'diazotizes',
     'dizzyingly',
