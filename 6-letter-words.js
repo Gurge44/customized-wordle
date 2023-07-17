@@ -2601,4 +2601,7 @@ export const SIXLETTERWORDS = [
     'zipper',
     'zombie',
     'zoning',
+    'inhale',
+    'exhale',
+    'sorrow',
 ]
