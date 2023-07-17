@@ -972,6 +972,7 @@ export const SEVENLETTERWORDS = [
     'between',
     'billion',
     'binding',
+    'bracket',
     'brother',
     'brought',
     'burning',
