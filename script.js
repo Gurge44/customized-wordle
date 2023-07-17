@@ -1,4 +1,5 @@
 document.getElementById("error").innerHTML = "Loading....";
+let version = "v3.0.1";
 toastr.options.progressBar = true;
 
 import { WORDS } from "./words.js";
@@ -822,7 +823,8 @@ async function correctGuessBounce() {
     fireWorks();
 }
 
-document.getElementById("error").innerHTML = ""
+document.getElementById("error").innerHTML = "";
+document.getElementById("error").innerHTML = version;
 
 document.addEventListener("keyup", (e) => {
 
