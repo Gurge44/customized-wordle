@@ -2498,4 +2498,6 @@ export const FOURLETTERWORDS = [
     'zinc',
     'zone',
     'zoom',
+    'ohio',
+    'wink',
 ]
