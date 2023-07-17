@@ -2079,6 +2079,7 @@ export const TENLETTERWORDS = [
     'tahsildars',
     'tailboards',
     'tailgaters',
+    'toothbrush',
     'undazzling',
     'unmuzzling',
     'unoxidized',
