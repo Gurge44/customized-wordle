@@ -1,6 +1,6 @@
 document.getElementById("error").innerHTML = "Loading....";
-let version = "v3.0.1";
-document.getElementById("title").innerHTML += " " + version;
+let version = "v3.0.4";
+document.getElementById("title").innerText = "Customized Wordle " + version;
 toastr.options.progressBar = true;
 
 import { WORDS } from "./words.js";
