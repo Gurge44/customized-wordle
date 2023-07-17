@@ -1,5 +1,6 @@
 document.getElementById("error").innerHTML = "Loading....";
 let version = "v3.0.1";
+document.getElementById("title").innerHTML += " " + version;
 toastr.options.progressBar = true;
 
 import { WORDS } from "./words.js";
@@ -824,7 +825,6 @@ async function correctGuessBounce() {
 }
 
 document.getElementById("error").innerHTML = "";
-document.getElementById("error").innerHTML = version;
 
 document.addEventListener("keyup", (e) => {
 
