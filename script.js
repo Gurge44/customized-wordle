@@ -1,5 +1,5 @@
 document.getElementById("error").innerHTML = "Loading....";
-let version = "v3.0.5";
+let version = "v3.0.6";
 document.getElementById("title").innerText = "Customized Wordle " + version;
 toastr.options.progressBar = true;
 
@@ -133,7 +133,7 @@ function changeWordLength() {
             document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 3) {
             rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
-            document.getElementById("tooFewWords").hidden = false;
+            document.getElementById("tooFewWords").hidden = true;
         } else if (wordLength === 4) {
             rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
             document.getElementById("tooFewWords").hidden = true;
@@ -208,7 +208,7 @@ function changeNumOfGuesses() {
         document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 3) {
         rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
-        document.getElementById("tooFewWords").hidden = false;
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 4) {
         rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
         document.getElementById("tooFewWords").hidden = true;
@@ -309,13 +309,19 @@ function startMainTimer() {
     if (yellowTimeBonus < 0) {yellowTimeBonus = 0}
     if (greyTimePenalty < 0) {greyTimePenalty = 0}
     var totalSecondsLeftDisplay = totalSecondsLeft;
+    var totalMinutesLeftDisplay = totalMinutesLeft;
     if (totalSecondsLeft < 10) {
         totalSecondsLeftDisplay = "0" + totalSecondsLeft;
     } else {
         totalSecondsLeftDisplay = totalSecondsLeft;
     }
+    if (totalMinutesLeft < 10) {
+        totalMinutesLeftDisplay = "0" + totalMinutesLeft;
+    } else {
+        totalMinutesLeftDisplay = totalMinutesLeft;
+    }
     document.getElementById("mainTimerDisplay").style.color = document.getElementById("letterColor").value;
-    document.getElementById("mainTimer").innerHTML = totalMinutesLeft + ":" + totalSecondsLeftDisplay;
+    document.getElementById("mainTimer").innerHTML = "<nobr>Good Luck!</nobr>";
     document.getElementById("mainTimerDisplay").hidden = false;
     var outputWarn = true;
 
@@ -344,6 +350,11 @@ function startMainTimer() {
                 totalSecondsLeftDisplay = "0" + totalSecondsLeft;
             } else {
                 totalSecondsLeftDisplay = totalSecondsLeft;
+            }
+            if (totalMinutesLeft < 10) {
+                totalMinutesLeftDisplay = "0" + totalMinutesLeft;
+            } else {
+                totalMinutesLeftDisplay = totalMinutesLeft;
             }
             if (isSquare) {
                 if (totalSecondsLeft <= 19 && totalSecondsLeft >= 10) {
@@ -383,7 +394,7 @@ function startMainTimer() {
                 mainTimerRunning = false;
                 cancel3 = true;
             }
-            document.getElementById("mainTimer").innerHTML = "<nobr><span style='margin-left: " + pull3 + "px; letter-spacing: " + pull4 + "px;'>" + totalMinutesLeft + "</span>:<span style='margin-left: " + pull + "px; letter-spacing: " + pull2 + "px;'>" + totalSecondsLeftDisplay + "</span></nobr>";
+            document.getElementById("mainTimer").innerHTML = "<nobr><span style='margin-left: " + pull3 + "px; letter-spacing: " + pull4 + "px;'>" + totalMinutesLeftDisplay + "</span>:<span style='margin-left: " + pull + "px; letter-spacing: " + pull2 + "px;'>" + totalSecondsLeftDisplay + "</span></nobr>";
         }
     }, 1000);
 }
@@ -399,13 +410,19 @@ function startPerGuessTimer() {
     fixTimeToGuessMinutes = timeToGuessMinutes;
     fixTimeToGuessSeconds = timeToGuessSeconds;
     var timeToGuessSecondsDisplay = timeToGuessSeconds;
+    var timeToGuessMinutesDisplay = timeToGuessMinutes;
     if (timeToGuessSeconds < 10) {
         timeToGuessSecondsDisplay = "0" + timeToGuessSeconds;
     } else {
         timeToGuessSecondsDisplay = timeToGuessSeconds;
     }
+    if (timeToGuessMinutes < 10) {
+        timeToGuessMinutesDisplay = "0" + timeToGuessMinutes;
+    } else {
+        timeToGuessMinutesDisplay = timeToGuessMinutes;
+    }
     document.getElementById("per-GuessTimerDisplay").style.color = document.getElementById("letterColor").value;
-    document.getElementById("per-GuessTimer").innerHTML = timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
+    document.getElementById("per-GuessTimer").innerHTML = "<nobr>Good Luck!</nobr>";
     document.getElementById("per-GuessTimerDisplay").hidden = false;
 
     var timer3 = setInterval(function() {
@@ -421,10 +438,41 @@ function startPerGuessTimer() {
                 timeToGuessSeconds = 60;
             }
             timeToGuessSeconds -= 1;
+            var pull = 0;
+            var pull2 = 0;
+            var pull3 = 0;
+            var pull4 = 0;
             if (timeToGuessSeconds < 10) {
                 timeToGuessSecondsDisplay = "0" + timeToGuessSeconds;
             } else {
                 timeToGuessSecondsDisplay = timeToGuessSeconds;
+            }
+            if (timeToGuessMinutes < 10) {
+                timeToGuessMinutesDisplay = "0" + timeToGuessMinutes;
+            } else {
+                timeToGuessMinutesDisplay = timeToGuessMinutes;
+            }
+            if (isSquare) {
+                if (timeToGuessSeconds <= 19 && timeToGuessSeconds >= 10) {
+                    pull = 8;
+                } else {
+                    pull = 0;
+                }
+                if (timeToGuessSeconds % 10 === 1) {
+                    pull2 = 10;
+                } else {
+                    pull2 = 3;
+                }
+                if (timeToGuessMinutes <= 19 && timeToGuessMinutes >= 10) {
+                    pull3 = 8;
+                } else {
+                    pull3 = 0;
+                }
+                if (timeToGuessMinutes % 10 === 1) {
+                    pull4 = 10;
+                } else {
+                    pull4 = 3;
+                }
             }
             if (timeToGuessSeconds <= 10 && timeToGuessMinutes <= 0) {
                 document.getElementById("per-GuessTimerDisplay").style.color = timerWarningColor;
@@ -439,7 +487,7 @@ function startPerGuessTimer() {
                 hideMainTimer = false;
                 cancel2 = true;
             }
-            document.getElementById("per-GuessTimer").innerHTML = timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
+            document.getElementById("per-GuessTimer").innerHTML = "<nobr><span style='margin-left: " + pull3 + "px; letter-spacing: " + pull4 + "px;'>" + timeToGuessMinutesDisplay + "</span>:<span style='margin-left: " + pull + "px; letter-spacing: " + pull2 + "px;'>" + timeToGuessSecondsDisplay + "</span></nobr>";
         }
     }, 1000);
 }
@@ -596,12 +644,18 @@ function checkGuess() {
     timeToGuessMinutes = fixTimeToGuessMinutes;
     timeToGuessSeconds = fixTimeToGuessSeconds;
     var timeToGuessSecondsDisplay = timeToGuessSeconds;
+    var timeToGuessMinutesDisplay = timeToGuessMinutes;
     if (timeToGuessSeconds < 10) {
         timeToGuessSecondsDisplay = "0" + timeToGuessSeconds;
     } else {
         timeToGuessSecondsDisplay = timeToGuessSeconds;
     }
-    document.getElementById("per-GuessTimer").innerHTML = timeToGuessMinutes + ":" + timeToGuessSecondsDisplay;
+    if (timeToGuessMinutes < 10) {
+        timeToGuessMinutesDisplay = "0" + timeToGuessMinutes;
+    } else {
+        timeToGuessMinutesDisplay = timeToGuessMinutes;
+    }
+    document.getElementById("per-GuessTimer").innerHTML = timeToGuessMinutesDisplay + ":" + timeToGuessSecondsDisplay;
 
     if (document.getElementById("enableLogging").checked) {
         console.log("---------------- NEW GUESS ----------------");
@@ -797,7 +851,10 @@ function checkGuess() {
         if (document.getElementById("autoRestart").checked) {
             autoRestart();
         }
-        return
+        setTimeout(() => {
+            isGuessCheckInProgress = false;
+        }, 200)
+        return;
     } else {
         guessesRemaining -= 1;
         currentGuess = [];
@@ -814,7 +871,9 @@ function checkGuess() {
             toastr.info(`The right word was: "${rightGuessString}"`);
         }
     }
-    isGuessCheckInProgress = false;
+    setTimeout(() => {
+        isGuessCheckInProgress = false;
+    }, 200)
 }
 
 function delay(milliseconds) {
@@ -948,14 +1007,8 @@ function cancelAutoRestart() {
 
 document.querySelector('#cancel').addEventListener("click", () => cancelAutoRestart());
 
-function restart() {
+async function restart() {
     if (guessesRemaining === NUMBER_OF_GUESSES) {
-        return;
-    }
-    if (isGuessCheckInProgress) {
-        setTimeout(() => {
-            restart();
-        }, 100);
         return;
     }
     if (onCooldown) {
@@ -965,12 +1018,23 @@ function restart() {
             restartInQueue = true;
             toastr.warning("Restart will happen after the animations are done.")
             setTimeout(() => {
-                restart();
                 onCooldown = false;
                 restartInQueue = false;
+                restart();
             }, 350 * wordLength + 3500);
             return;
         }
+    }
+    await delay(150);
+    if (isGuessCheckInProgress && guessesRemaining != 0) {
+        return;
+    }
+    if (guessesRemaining === 0 && isGuessCheckInProgress) {
+        toastr.warning("Restarting in 10 seconds");
+        setTimeout(() => {
+            restart();
+        }, 10000);
+        return;
     }
     document.getElementById("error").innerHTML = "Loading....";
     var input = document.getElementById("numOfGuessesType").value;
@@ -1001,7 +1065,7 @@ function restart() {
         document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 3) {
         rightGuessString = THREELETTERWORDS[Math.floor(Math.random() * THREELETTERWORDS.length)]
-        document.getElementById("tooFewWords").hidden = false;
+        document.getElementById("tooFewWords").hidden = true;
     } else if (wordLength === 4) {
         rightGuessString = FOURLETTERWORDS[Math.floor(Math.random() * FOURLETTERWORDS.length)]
         document.getElementById("tooFewWords").hidden = true;
