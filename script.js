@@ -838,6 +838,9 @@ function checkGuess() {
             a.style.color = timeChangeNegativeColor;
             a.innerHTML = entireGuessTimeChange + "s";
         }
+        if (guessString === rightGuessString) {
+            a.innerHTML = "";
+        }
     }
 
     if (guessString === rightGuessString) {
