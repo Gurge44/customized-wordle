@@ -1,5 +1,5 @@
 document.getElementById("error").innerHTML = "Loading....";
-let version = "v3.0.6";
+let version = "v3.0.7";
 document.getElementById("title").innerText = "Customized Wordle " + version;
 toastr.options.progressBar = true;
 
