@@ -1,5 +1,5 @@
 document.getElementById("error").innerHTML = "Loading....";
-let version = "v3.0.7";
+let version = "v3.1.0";
 document.getElementById("title").innerText = "Customized Wordle " + version;
 toastr.options.progressBar = true;
 
@@ -681,7 +681,7 @@ function checkGuess() {
         } else {
             if (currentGuess[i] === rightGuess[i]) {
                 letterColor = greenColor;
-                if (lettersToBeFound.includes(currentGuess[i]) && mainTimerRunning) {
+                if (lettersToBeFound.includes(currentGuess[i]) && indexesToBeFound.includes(i) && mainTimerRunning) {
                     timeChange += Number(greenTimeBonus);
                 }
                 let newArray = [];
